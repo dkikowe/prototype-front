@@ -44,7 +44,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 40px;
+  margin-top: 50px; /* Увеличиваем отступ сверху */
 
   width: 100%;
 }
@@ -94,7 +94,7 @@ color: #fff;
 }
 
 .welcomeSlider {
-  margin-top: 15px;
+  margin-top: 25px; /* Увеличиваем отступ сверху */
 }
 
 .sliderContainer {
@@ -112,7 +112,7 @@ color: #fff;
 
 .welcomeCard {
   width: calc(100% - 4px); /* визуально учитываем половину gap по бокам */
-  height: 40%;
+  height: 180px; /* Увеличиваем высоту карточек */
   background-color: #5164CE;
   border-radius: 25px;
   border-image: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(153, 153, 153, 0.2)) 1;
@@ -178,7 +178,7 @@ color: #fff;
 .buttonsContainer {
   display: flex;
   gap: 10px;
-  margin-top: 20px;
+  margin-top: 30px; /* Увеличиваем отступ сверху */
 
 }
 
@@ -261,8 +261,8 @@ color: #fff;
 
 .terminalContainer {
   width: 100%;
-  height: 309px;
-  margin-top: 15px;
+  height: 400px; /* Увеличиваем высоту терминала */
+  margin-top: 25px; /* Увеличиваем отступ сверху */
   position: relative;
   border-radius: 16px;
   overflow: hidden;
@@ -359,7 +359,7 @@ color: #fff;
 }
 
 .terminalContent {
-  height: 259px;
+  height: 350px; /* Увеличиваем высоту контента терминала */
   background-color: rgba(32, 32, 32, 0.5);
   backdrop-filter: blur(25px);
   border: 1px solid;
@@ -373,7 +373,7 @@ color: #fff;
 
 .terminalLogs {
   padding: 20px 15px;
-  height: 200px;
+  height: 290px; /* Увеличиваем высоту области логов */
   overflow-y: auto;
 }
 

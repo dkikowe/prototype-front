@@ -21,6 +21,13 @@ const MiningPage = ({ showPopup, setShowPopup }) => {
     "[SYNC] Синхронизация узлов: 12% → 56% → 95% → 100%",
     "[DATA] Игровой баланс: 1100₿ • Энергия: 12",
     "[INFO] Готово к поиску. Нажми «Поиск», чтобы начать скан.",
+    "[STATUS] Система активна и готова к работе",
+    "[NETWORK] Подключение к сети Bitcoin стабильно",
+    "[MEMORY] Использование памяти: 45%",
+    "[CPU] Загрузка процессора: 23%",
+    "[STORAGE] Свободное место: 2.1 GB",
+    "[SECURITY] Все проверки безопасности пройдены",
+    "[READY] Ожидание команд пользователя...",
   ]);
   const terminalRef = React.useRef(null);
   const [liveFeedMessages, setLiveFeedMessages] = useState([
@@ -33,6 +40,14 @@ const MiningPage = ({ showPopup, setShowPopup }) => {
     "[19:28] > user#3142: 712₿ | 0x82..3C",
     "[19:28] > @oracle: 8392₿ | 0xDE..F5",
     "[19:28] > user#1190: 351₿ | 0x1A..B7",
+    "[19:29] > @cypher: 1850₿ | 0x3F..8A",
+    "[19:29] > user#4567: 920₿ | 0x9C..2E",
+    "[19:30] > @neo: 6543₿ | 0x1B..7D",
+    "[19:30] > user#7890: 128₿ | 0x4A..9F",
+    "[19:31] > @smith: 2750₿ | 0x6D..3C",
+    "[19:31] > user#1234: 456₿ | 0x8E..5A",
+    "[19:32] > @tank: 3890₿ | 0x2F..8B",
+    "[19:32] > user#5678: 167₿ | 0x5C..1D",
   ]);
 
   const scrollToBottom = () => {
