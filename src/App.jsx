@@ -11,24 +11,14 @@ function App() {
   const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
-    const tg = typeof window !== "undefined" ? window?.Telegram?.WebApp : undefined;
-    if (!tg) return;
+    const tg = window.Telegram.WebApp;
+    tg.requestFullscreen();
+    tg.disableVerticalSwipes();
+    tg.ready();
 
-    try {
-      tg.requestFullscreen?.();
-    } catch (_) {}
-
-    try {
-      tg.expand?.();
-    } catch (_) {}
-
-    try {
-      tg.disableVerticalSwipes?.();
-    } catch (_) {}
-
-    try {
-      tg.ready?.();
-    } catch (_) {}
+    return () => {
+      tg.close(); // Закрытие веб-приложения (при необходимости)
+    };
   }, []);
 
   const renderPage = () => {
