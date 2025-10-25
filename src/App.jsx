@@ -53,6 +53,10 @@ function App() {
     tg.onEvent("themeChanged", handleThemeChange);
 
     return () => {
+      tg.close(); // Закрытие веб-приложения (при необходимости)
+    };
+
+    return () => {
       tg.offEvent("viewportChanged", applyVh);
       tg.offEvent("themeChanged", handleThemeChange);
     };
