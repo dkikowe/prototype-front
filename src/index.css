@@ -22,6 +22,8 @@
 
 html {
   overflow-x: hidden;
+  /* Предотвращаем закрытие при скролле в начале страницы */
+  overscroll-behavior: contain;
 }
 
 body {
@@ -31,6 +33,10 @@ body {
   background-color: #101010;
   overflow-x: hidden;
   width: 100%;
+  /* Предотвращаем bounce эффект на iOS */
+  overscroll-behavior: contain;
+  /* Предотвращаем закрытие при скролле вверх */
+  -webkit-overflow-scrolling: touch;
 }
 
 #root {
@@ -45,4 +51,8 @@ body {
   background-color: #101010;
   display: flex;
   flex-direction: column;
+  /* Предотвращаем закрытие приложения при скролле */
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
+

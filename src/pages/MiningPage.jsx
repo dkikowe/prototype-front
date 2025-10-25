@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./Page.module.scss";
 import FoundPopup from "../components/FoundPopup";
 
-const MiningPage = ({ showPopup, setShowPopup }) => {
+const MiningPage = ({ showPopup, setShowPopup, userInfo }) => {
   const [activeTab, setActiveTab] = useState("token_finder");
   const [isScanning, setIsScanning] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -118,9 +118,10 @@ const MiningPage = ({ showPopup, setShowPopup }) => {
     setLiveFeedMessages(initialLiveFeedMessages);
 
     // Инициализируем сообщения терминала с задержкой
+    const username = userInfo?.username || "username";
     const initialTerminalMessages = [
       "[BOOT] Подключение к BTC Prototype...",
-      "[AUTH] Пользователь: @username — проверка доступа...",
+      `[AUTH] Пользователь: @${username} — проверка доступа...`,
       "[OK] Соединение установлено",
       "[SYNC] Синхронизация узлов: 12% → 56% → 95% → 100%",
       "[DATA] Игровой баланс: 1100₿ • Энергия: 12",
@@ -146,7 +147,7 @@ const MiningPage = ({ showPopup, setShowPopup }) => {
           "[DETECT] Найден активный адрес",
           "[ADDR] 0xA3b7...E2",
           "[BALANCE] 0.057 BTC",
-          "[BOT] Отличная находка, {name}.",
+          `[BOT] Отличная находка, ${userInfo?.displayName || "Пользователь"}.`,
           "[INFO] Поиск завершён",
         ];
 
@@ -164,7 +165,7 @@ const MiningPage = ({ showPopup, setShowPopup }) => {
     };
 
     setTimeout(addMessage, 1000); // Начинаем через 1 секунду после загрузки
-  }, []);
+  }, [userInfo]);
 
   useEffect(() => {
     scrollToTop();
@@ -300,9 +301,11 @@ const MiningPage = ({ showPopup, setShowPopup }) => {
                   </div>
                   <div className={styles.welcomeText}>
                     Удачного поиска, <br />
-                    {`{name}`}!
+                    {userInfo?.displayName || "[name]"}!
                   </div>
-                  <div className={styles.usernameText}>@username_telegram</div>
+                  <div className={styles.usernameText}>
+                    @{userInfo?.username || "username_telegram"}
+                  </div>
                 </div>
                 <div className={styles.largeHash}>
                   <img src="/mine-icons/reshetka.svg" alt="hash" />
@@ -317,9 +320,11 @@ const MiningPage = ({ showPopup, setShowPopup }) => {
                   </div>
                   <div className={styles.welcomeText}>
                     Удачного поиска, <br />
-                    {`{name}`}!
+                    {userInfo?.displayName || "Пользователь"}!
                   </div>
-                  <div className={styles.usernameText}>@username_telegram</div>
+                  <div className={styles.usernameText}>
+                    @{userInfo?.username || "username_telegram"}
+                  </div>
                 </div>
                 <div className={styles.largeHash}>
                   <img src="/mine-icons/reshetka.svg" alt="hash" />

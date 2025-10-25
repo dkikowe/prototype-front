@@ -5,57 +5,25 @@ import TasksPage from "./pages/TasksPage";
 import MiningPage from "./pages/MiningPage";
 import ExchangePage from "./pages/ExchangePage";
 import ProfilePage from "./pages/ProfilePage";
+import {
+  initializeTelegramWebApp,
+  getTelegramUserInfo,
+} from "./utils/telegramUtils";
 
 function App() {
   const [activeTab, setActiveTab] = useState("mining");
   const [showPopup, setShowPopup] = useState(false);
+  const [userInfo, setUserInfo] = useState(null);
 
   useEffect(() => {
-    const tg = window?.Telegram?.WebApp;
-    if (!tg) return;
-
     // Инициализация Telegram WebApp
-    tg.ready();
+    const cleanup = initializeTelegramWebApp();
 
-    // Настройка полноэкранного режима
-    tg.expand(); // Раскрывает WebApp на полный экран
-    tg.enableClosingConfirmation(); // Подтверждение закрытия
-    // tg.disableVerticalSwipes(); // Разрешаем вертикальные свайпы для скролла
+    // Получаем информацию о пользователе
+    const user = getTelegramUserInfo();
+    setUserInfo(user);
 
-    // Настройка цветовой схемы
-    tg.setHeaderColor("#1a1a1a"); // Темный цвет заголовка
-    tg.setBackgroundColor("#1a1a1a"); // Темный фон
-
-    // Функция для применения высоты viewport
-    const applyVh = () => {
-      const h = tg.viewportStableHeight || tg.viewportHeight;
-      if (h) {
-        document.documentElement.style.setProperty(
-          "--tg-viewport-height",
-          `${h}px`
-        );
-        // Устанавливаем высоту для body чтобы обеспечить скролл
-        document.body.style.height = `${h}px`;
-        document.body.style.overflowY = "auto";
-      }
-    };
-
-    applyVh();
-    tg.onEvent("viewportChanged", applyVh);
-
-    // Обработка изменения темы
-    const handleThemeChange = () => {
-      const theme = tg.colorScheme;
-      document.documentElement.setAttribute("data-theme", theme);
-    };
-
-    handleThemeChange();
-    tg.onEvent("themeChanged", handleThemeChange);
-
-    return () => {
-      tg.offEvent("viewportChanged", applyVh);
-      tg.offEvent("themeChanged", handleThemeChange);
-    };
+    return cleanup;
   }, []);
 
   const renderPage = () => {
@@ -65,13 +33,25 @@ function App() {
       case "tasks":
         return <TasksPage />;
       case "mining":
-        return <MiningPage showPopup={showPopup} setShowPopup={setShowPopup} />;
+        return (
+          <MiningPage
+            showPopup={showPopup}
+            setShowPopup={setShowPopup}
+            userInfo={userInfo}
+          />
+        );
       case "exchange":
         return <ExchangePage />;
       case "profile":
         return <ProfilePage />;
       default:
-        return <MiningPage showPopup={showPopup} setShowPopup={setShowPopup} />;
+        return (
+          <MiningPage
+            showPopup={showPopup}
+            setShowPopup={setShowPopup}
+            userInfo={userInfo}
+          />
+        );
     }
   };
 

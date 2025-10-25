@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram WebApp Test</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+    <div id="app">
+        <h1>Тест Telegram WebApp</h1>
+        <div id="user-info">
+            <p>Имя: <span id="user-name">Загрузка...</span></p>
+            <p>Username: <span id="user-username">Загрузка...</span></p>
+            <p>ID: <span id="user-id">Загрузка...</span></p>
+        </div>
+        <div id="init-data">
+            <h3>Init Data:</h3>
+            <pre id="init-data-content">Загрузка...</pre>
+        </div>
+    </div>
+
+    <script>
+        // Инициализация Telegram WebApp
+        const tg = window.Telegram.WebApp;
+        
+        if (tg) {
+            tg.ready();
+            tg.expand();
+            
+            // Получаем информацию о пользователе
+            const user = tg.initDataUnsafe?.user;
+            
+            if (user) {
+                document.getElementById('user-name').textContent = user.first_name || 'Не указано';
+                document.getElementById('user-username').textContent = user.username || 'Не указано';
+                document.getElementById('user-id').textContent = user.id || 'Не указано';
+            }
+            
+            // Показываем init data
+            document.getElementById('init-data-content').textContent = 
+                JSON.stringify(tg.initDataUnsafe, null, 2);
+        } else {
+            document.getElementById('user-info').innerHTML = '<p>Telegram WebApp не доступен</p>';
+            document.getElementById('init-data-content').textContent = 'Telegram WebApp не доступен';
+        }
+    </script>
+</body>
+</html>

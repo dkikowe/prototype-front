@@ -15,7 +15,7 @@ const FoundPopup = ({
           {/* Основное изображение */}
           <div className={styles.imageContainer}>
             <img
-              src="/mine-icons/found.svg"
+              src="/mine-icons/found.png"
               alt="found"
               className={styles.foundImage}
             />
