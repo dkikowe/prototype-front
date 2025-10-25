@@ -22,7 +22,7 @@
 
 .foundCard {
   width: 305px;
-  height: 386px;
+height: 400px;
   background-color: rgba(32, 32, 32, 0.5);
   border-radius: 25px;
 
@@ -41,18 +41,18 @@
 
 .imageContainer {
   position: absolute;
-  top: -37px;
+  top: 0px;
   left: -31px;
   width: 367px;
-  height: 500px;
+
   z-index: 1;
 }
 
 .foundImage {
   width: 100%;
-  height: 100%;
+
   object-fit: cover;
-  transform: scale(0.838) translate(0.08px, 0.46px);
+
 }
 
 
@@ -64,7 +64,7 @@
     color: #fff;
     width: 100%;
   text-align: left;
-  margin-top: 140px;
+  margin-top: 180px;
   z-index: 3;
   position: relative;
 }
