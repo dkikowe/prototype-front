@@ -1,0 +1,203 @@
+.popupOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1001;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.popupContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: scaleIn 0.3s ease-out;
+}
+
+.foundCard {
+  width: 305px;
+  height: 386px;
+  background-color: rgba(32, 32, 32, 0.5);
+  border-radius: 25px;
+
+  border-image: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05)) 1;
+  backdrop-filter: blur(25px);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 25px;
+  gap: 25px;
+}
+
+
+
+.imageContainer {
+  position: absolute;
+  top: -37px;
+  left: -31px;
+  width: 367px;
+  height: 500px;
+  z-index: 1;
+}
+
+.foundImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(0.838) translate(0.08px, 0.46px);
+}
+
+
+.foundTitle {
+    font-family: "Manrope", sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 130%;
+    color: #fff;
+    width: 100%;
+  text-align: left;
+  margin-top: 140px;
+  z-index: 3;
+  position: relative;
+}
+
+.infoContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  z-index: 3;
+  position: relative;
+}
+
+.walletInfo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 20px;
+}
+
+.walletIcon {
+  width: 20px;
+  height: 20px;
+
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+ 
+}
+
+.walletAddress {
+    font-family: "Manrope", sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 130%;
+    color: #fff;
+}
+
+.balanceInfo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 22px;
+}
+
+.balanceIcon {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  img {
+    width: 13px;
+    height: 13px;
+    filter: brightness(0) saturate(100%) invert(32%) sepia(100%) saturate(100%) hue-rotate(200deg) brightness(100%) contrast(100%);
+  }
+}
+
+.balanceText {
+    font-family: "Manrope", sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 130%;
+    text-align: center;
+    color: #fff;
+}
+
+.balanceIconEnd {
+  width: 22px;
+  height: 22px;
+  filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
+}
+
+.getButton {
+
+
+  background: #5264ce;
+  backdrop-filter: blur(64px);
+  border: none;
+  border-radius: 1000px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: "Manrope", sans-serif;
+  font-size: 14px;
+  color: #fff;
+  font-weight: 500;
+  position: relative;
+
+  z-index: 3;
+  backdrop-filter: blur(64.0999984741211px);
+background: #5264ce;
+border-radius: 1000px;
+padding: 15px 20px;
+width: 255px;
+height: 48px;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(81, 100, 206, 0.3);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.buttonText {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
