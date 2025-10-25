@@ -2,29 +2,60 @@
 export const parseTelegramInitData = () => {
   try {
     const tg = window?.Telegram?.WebApp;
-    if (!tg) return null;
+    if (!tg) {
+      console.log("Telegram WebApp не доступен");
+      return null;
+    }
 
-    // Получаем init data из Telegram WebApp
-    const initData = tg.initData;
-    if (!initData) return null;
+    console.log("Telegram WebApp доступен:", tg);
+    console.log("initData:", tg.initData);
+    console.log("initDataUnsafe:", tg.initDataUnsafe);
 
-    // Парсим init data
-    const urlParams = new URLSearchParams(initData);
-    const userParam = urlParams.get("user");
+    // Способ 1: Используем initDataUnsafe (рекомендуемый)
+    if (tg.initDataUnsafe?.user) {
+      const user = tg.initDataUnsafe.user;
+      console.log("Получили данные через initDataUnsafe:", user);
 
-    if (!userParam) return null;
+      return {
+        id: user.id,
+        firstName: user.first_name || "",
+        lastName: user.last_name || "",
+        username: user.username || "",
+        languageCode: user.language_code || "ru",
+        isPremium: user.is_premium || false,
+        photoUrl: user.photo_url || null,
+      };
+    }
 
-    const user = JSON.parse(decodeURIComponent(userParam));
+    // Способ 2: Парсим initData строку
+    if (tg.initData) {
+      try {
+        const urlParams = new URLSearchParams(tg.initData);
+        const userParam = urlParams.get("user");
 
-    return {
-      id: user.id,
-      firstName: user.first_name || "",
-      lastName: user.last_name || "",
-      username: user.username || "",
-      languageCode: user.language_code || "ru",
-      isPremium: user.is_premium || false,
-      photoUrl: user.photo_url || null,
-    };
+        if (userParam) {
+          const user = JSON.parse(decodeURIComponent(userParam));
+          console.log("Получили данные через парсинг initData:", user);
+
+          return {
+            id: user.id,
+            firstName: user.first_name || "",
+            lastName: user.last_name || "",
+            username: user.username || "",
+            languageCode: user.language_code || "ru",
+            isPremium: user.is_premium || false,
+            photoUrl: user.photo_url || null,
+          };
+        }
+      } catch (parseError) {
+        console.error("Ошибка парсинга initData:", parseError);
+      }
+    }
+
+    // Способ 3: Проверяем другие возможные свойства
+    console.log("Доступные свойства Telegram WebApp:", Object.keys(tg));
+
+    return null;
   } catch (error) {
     console.error("Ошибка при парсинге Telegram init data:", error);
     return null;
@@ -32,18 +63,31 @@ export const parseTelegramInitData = () => {
 };
 
 export const getTelegramUserInfo = () => {
+  console.log("Получаем информацию о пользователе...");
   const userData = parseTelegramInitData();
+
+  console.log("Полученные данные пользователя:", userData);
 
   if (!userData) {
     // Fallback данные для разработки
+    console.log("Используем fallback данные");
     return {
       firstName: "Пользователь",
       username: "username_telegram",
       displayName: "Пользователь",
+      id: null,
     };
   }
 
   const displayName = userData.firstName || userData.username || "Пользователь";
+
+  console.log("Итоговые данные пользователя:", {
+    firstName: userData.firstName,
+    username: userData.username,
+    displayName: displayName,
+    fullName: `${userData.firstName} ${userData.lastName}`.trim(),
+    id: userData.id,
+  });
 
   return {
     firstName: userData.firstName,
@@ -56,7 +100,12 @@ export const getTelegramUserInfo = () => {
 
 export const initializeTelegramWebApp = () => {
   const tg = window?.Telegram?.WebApp;
-  if (!tg) return;
+  if (!tg) {
+    console.log("Telegram WebApp не доступен для инициализации");
+    return;
+  }
+
+  console.log("Инициализируем Telegram WebApp...");
 
   // Инициализация Telegram WebApp
   tg.ready();
@@ -73,6 +122,8 @@ export const initializeTelegramWebApp = () => {
   // Дополнительные настройки для предотвращения закрытия
   tg.enableClosingConfirmation(); // Включаем подтверждение закрытия
   tg.disableVerticalSwipes(); // Отключаем вертикальные свайпы
+
+  console.log("Telegram WebApp инициализирован");
 
   // Настройка поведения при скролле
   document.addEventListener(

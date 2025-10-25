@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import styles from "./Page.module.scss";
 import FoundPopup from "../components/FoundPopup";
+import { getTelegramUserInfo } from "../utils/telegramUtils";
 
 const MiningPage = ({ showPopup, setShowPopup, userInfo }) => {
+  console.log("MiningPage: Получены данные пользователя:", userInfo);
   const [activeTab, setActiveTab] = useState("token_finder");
   const [isScanning, setIsScanning] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -20,6 +22,22 @@ const MiningPage = ({ showPopup, setShowPopup, userInfo }) => {
   const scrollTimeoutRef = React.useRef(null);
   const [liveFeedMessages, setLiveFeedMessages] = useState([]);
   const isInitialized = React.useRef(false);
+  const [localUserInfo, setLocalUserInfo] = useState(null);
+
+  // Альтернативный способ получения данных пользователя
+  useEffect(() => {
+    if (!userInfo) {
+      console.log(
+        "MiningPage: userInfo не получен, пытаемся получить локально..."
+      );
+      const localUser = getTelegramUserInfo();
+      console.log("MiningPage: Локально полученные данные:", localUser);
+      setLocalUserInfo(localUser);
+    }
+  }, [userInfo]);
+
+  // Используем локальные данные если основные не получены
+  const effectiveUserInfo = userInfo || localUserInfo;
 
   // Массив шаблонов для генерации новых сообщений live feed
   const liveFeedTemplates = [
@@ -118,7 +136,7 @@ const MiningPage = ({ showPopup, setShowPopup, userInfo }) => {
     setLiveFeedMessages(initialLiveFeedMessages);
 
     // Инициализируем сообщения терминала с задержкой
-    const username = userInfo?.username || "username";
+    const username = effectiveUserInfo?.username || "username";
     const initialTerminalMessages = [
       "[BOOT] Подключение к BTC Prototype...",
       `[AUTH] Пользователь: @${username} — проверка доступа...`,
@@ -147,7 +165,9 @@ const MiningPage = ({ showPopup, setShowPopup, userInfo }) => {
           "[DETECT] Найден активный адрес",
           "[ADDR] 0xA3b7...E2",
           "[BALANCE] 0.057 BTC",
-          `[BOT] Отличная находка, ${userInfo?.displayName || "Пользователь"}.`,
+          `[BOT] Отличная находка, ${
+            effectiveUserInfo?.displayName || "Пользователь"
+          }.`,
           "[INFO] Поиск завершён",
         ];
 
@@ -165,7 +185,7 @@ const MiningPage = ({ showPopup, setShowPopup, userInfo }) => {
     };
 
     setTimeout(addMessage, 1000); // Начинаем через 1 секунду после загрузки
-  }, [userInfo]);
+  }, [effectiveUserInfo]);
 
   useEffect(() => {
     scrollToTop();
@@ -252,6 +272,33 @@ const MiningPage = ({ showPopup, setShowPopup, userInfo }) => {
     <div className={styles.page}>
       <div className={styles.pageContent}>
         <div className={styles.prototypeText}>prototype</div>
+
+        {/* Отладочная информация о пользователе */}
+        {effectiveUserInfo && (
+          <div
+            style={{
+              position: "fixed",
+              top: "10px",
+              right: "10px",
+              background: "rgba(0,0,0,0.8)",
+              color: "white",
+              padding: "10px",
+              borderRadius: "5px",
+              fontSize: "12px",
+              zIndex: 9999,
+              maxWidth: "200px",
+            }}
+          >
+            <div>
+              <strong>Отладка пользователя:</strong>
+            </div>
+            <div>Имя: {effectiveUserInfo.displayName}</div>
+            <div>Username: @{effectiveUserInfo.username}</div>
+            <div>ID: {effectiveUserInfo.id || "N/A"}</div>
+            <div>First Name: {effectiveUserInfo.firstName || "N/A"}</div>
+            <div>Источник: {userInfo ? "App" : "Local"}</div>
+          </div>
+        )}
         <div className={styles.balanceSection}>
           <div className={styles.balanceLabel}>Балансы</div>
           <div className={styles.balanceValues}>
@@ -301,10 +348,10 @@ const MiningPage = ({ showPopup, setShowPopup, userInfo }) => {
                   </div>
                   <div className={styles.welcomeText}>
                     Удачного поиска, <br />
-                    {userInfo?.displayName || "[name]"}!
+                    {effectiveUserInfo?.displayName || "Пользователь"}!
                   </div>
                   <div className={styles.usernameText}>
-                    @{userInfo?.username || "username_telegram"}
+                    @{effectiveUserInfo?.username || "username_telegram"}
                   </div>
                 </div>
                 <div className={styles.largeHash}>
@@ -320,10 +367,10 @@ const MiningPage = ({ showPopup, setShowPopup, userInfo }) => {
                   </div>
                   <div className={styles.welcomeText}>
                     Удачного поиска, <br />
-                    {userInfo?.displayName || "Пользователь"}!
+                    {effectiveUserInfo?.displayName || "Пользователь"}!
                   </div>
                   <div className={styles.usernameText}>
-                    @{userInfo?.username || "username_telegram"}
+                    @{effectiveUserInfo?.username || "username_telegram"}
                   </div>
                 </div>
                 <div className={styles.largeHash}>

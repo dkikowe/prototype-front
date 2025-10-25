@@ -16,12 +16,23 @@ function App() {
   const [userInfo, setUserInfo] = useState(null);
 
   useEffect(() => {
+    console.log("App: Инициализация...");
+
     // Инициализация Telegram WebApp
     const cleanup = initializeTelegramWebApp();
 
-    // Получаем информацию о пользователе
-    const user = getTelegramUserInfo();
-    setUserInfo(user);
+    // Получаем информацию о пользователе с задержкой для гарантии готовности WebApp
+    const getUserInfo = () => {
+      console.log("App: Получаем информацию о пользователе...");
+      const user = getTelegramUserInfo();
+      console.log("App: Полученная информация о пользователе:", user);
+      setUserInfo(user);
+    };
+
+    // Пробуем сразу и через небольшую задержку
+    getUserInfo();
+    setTimeout(getUserInfo, 100);
+    setTimeout(getUserInfo, 500); // Дополнительная попытка
 
     return cleanup;
   }, []);
