@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./Page.module.scss";
 
-const LeadersPage = () => {
+const LeadersPage = ({ userData }) => {
   return (
     <div className={styles.page}>
       <div className={styles.pageContent}>

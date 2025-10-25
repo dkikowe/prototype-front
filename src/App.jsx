@@ -5,62 +5,97 @@ import TasksPage from "./pages/TasksPage";
 import MiningPage from "./pages/MiningPage";
 import ExchangePage from "./pages/ExchangePage";
 import ProfilePage from "./pages/ProfilePage";
-import {
-  initializeTelegramWebApp,
-  getTelegramUserInfo,
-} from "./utils/telegramUtils";
 
 function App() {
   const [activeTab, setActiveTab] = useState("mining");
   const [showPopup, setShowPopup] = useState(false);
-  const [userInfo, setUserInfo] = useState(null);
+  const [userData, setUserData] = useState(null);
 
   useEffect(() => {
-    console.log("App: Инициализация...");
+    const tg = window?.Telegram?.WebApp;
+    if (!tg) return;
 
     // Инициализация Telegram WebApp
-    const cleanup = initializeTelegramWebApp();
+    tg.ready();
 
-    // Получаем информацию о пользователе с задержкой для гарантии готовности WebApp
-    const getUserInfo = () => {
-      console.log("App: Получаем информацию о пользователе...");
-      const user = getTelegramUserInfo();
-      console.log("App: Полученная информация о пользователе:", user);
-      setUserInfo(user);
+    // Получаем данные пользователя только после готовности WebApp
+    tg.onEvent("ready", () => {
+      const user = tg.initDataUnsafe?.user;
+      if (user) {
+        setUserData({
+          id: user.id,
+          firstName: user.first_name,
+          lastName: user.last_name,
+          username: user.username,
+          languageCode: user.language_code,
+        });
+      }
+    });
+
+    // Настройка полноэкранного режима
+    tg.expand(); // Раскрывает WebApp на полный экран
+    tg.enableClosingConfirmation(); // Подтверждение закрытия
+
+    // Настройка цветовой схемы
+    tg.setHeaderColor("#1a1a1a"); // Темный цвет заголовка
+    tg.setBackgroundColor("#1a1a1a"); // Темный фон
+
+    // Функция для применения высоты viewport
+    const applyVh = () => {
+      const h = tg.viewportStableHeight || tg.viewportHeight;
+      if (h) {
+        document.documentElement.style.setProperty(
+          "--tg-viewport-height",
+          `${h}px`
+        );
+        // Устанавливаем высоту для body чтобы обеспечить скролл
+        document.body.style.height = `${h}px`;
+        document.body.style.overflowY = "auto";
+      }
     };
 
-    // Пробуем сразу и через небольшую задержку
-    getUserInfo();
-    setTimeout(getUserInfo, 100);
-    setTimeout(getUserInfo, 500); // Дополнительная попытка
+    applyVh();
+    tg.onEvent("viewportChanged", applyVh);
 
-    return cleanup;
+    // Обработка изменения темы
+    const handleThemeChange = () => {
+      const theme = tg.colorScheme;
+      document.documentElement.setAttribute("data-theme", theme);
+    };
+
+    handleThemeChange();
+    tg.onEvent("themeChanged", handleThemeChange);
+
+    return () => {
+      tg.offEvent("viewportChanged", applyVh);
+      tg.offEvent("themeChanged", handleThemeChange);
+    };
   }, []);
 
   const renderPage = () => {
     switch (activeTab) {
       case "leaders":
-        return <LeadersPage />;
+        return <LeadersPage userData={userData} />;
       case "tasks":
-        return <TasksPage />;
+        return <TasksPage userData={userData} />;
       case "mining":
         return (
           <MiningPage
             showPopup={showPopup}
             setShowPopup={setShowPopup}
-            userInfo={userInfo}
+            userData={userData}
           />
         );
       case "exchange":
-        return <ExchangePage />;
+        return <ExchangePage userData={userData} />;
       case "profile":
-        return <ProfilePage />;
+        return <ProfilePage userData={userData} />;
       default:
         return (
           <MiningPage
             showPopup={showPopup}
             setShowPopup={setShowPopup}
-            userInfo={userInfo}
+            userData={userData}
           />
         );
     }
