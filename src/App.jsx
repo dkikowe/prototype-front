@@ -5,10 +5,7 @@ import TasksPage from "./pages/TasksPage";
 import MiningPage from "./pages/MiningPage";
 import ExchangePage from "./pages/ExchangePage";
 import ProfilePage from "./pages/ProfilePage";
-import {
-  initializeTelegramWebApp,
-  getTelegramUserInfo,
-} from "./utils/telegramUtils";
+
 function App() {
   const [activeTab, setActiveTab] = useState("mining");
   const [showPopup, setShowPopup] = useState(false);
