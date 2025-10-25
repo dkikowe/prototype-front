@@ -7,24 +7,33 @@ import ExchangePage from "./pages/ExchangePage";
 import ProfilePage from "./pages/ProfilePage";
 
 function App() {
-  const [activeTab, setActiveTab] = useState("mining"); // По умолчанию активна страница "Майнинг"
+  const [activeTab, setActiveTab] = useState("mining");
   const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
-    // Проверяем, что мы в Telegram WebApp
-    if (typeof window !== "undefined" && window.Telegram?.WebApp) {
-      const tg = window.Telegram.WebApp;
+    const tg = window?.Telegram?.WebApp;
+    if (!tg) return;
 
-      // Инициализация Telegram WebApp
-      tg.requestFullscreen();
-      tg.disableVerticalSwipes();
-      tg.ready();
+    tg.ready();
+    tg.expand(); // именно это «раскрывает» WebApp
+    tg.disableVerticalSwipes(); // по желанию
 
-      return () => {
-        // Cleanup функция - закрытие при размонтировании компонента
-        tg.close();
-      };
-    }
+    const applyVh = () => {
+      const h = tg.viewportStableHeight || tg.viewportHeight;
+      if (h)
+        document.documentElement.style.setProperty(
+          "--tg-viewport-height",
+          `${h}px`
+        );
+    };
+
+    applyVh();
+    tg.onEvent("viewportChanged", applyVh);
+
+    return () => {
+      tg.offEvent("viewportChanged", applyVh);
+      // tg.close() здесь вызывать не нужно
+    };
   }, []);
 
   const renderPage = () => {
