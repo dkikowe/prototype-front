@@ -9,7 +9,6 @@ import ProfilePage from "./pages/ProfilePage";
 function App() {
   const [activeTab, setActiveTab] = useState("mining");
   const [showPopup, setShowPopup] = useState(false);
-  const [userData, setUserData] = useState(null);
 
   useEffect(() => {
     const tg = window?.Telegram?.WebApp;
@@ -18,23 +17,10 @@ function App() {
     // Инициализация Telegram WebApp
     tg.ready();
 
-    // Получаем данные пользователя только после готовности WebApp
-    tg.onEvent("ready", () => {
-      const user = tg.initDataUnsafe?.user;
-      if (user) {
-        setUserData({
-          id: user.id,
-          firstName: user.first_name,
-          lastName: user.last_name,
-          username: user.username,
-          languageCode: user.language_code,
-        });
-      }
-    });
-
     // Настройка полноэкранного режима
     tg.expand(); // Раскрывает WebApp на полный экран
     tg.enableClosingConfirmation(); // Подтверждение закрытия
+    // tg.disableVerticalSwipes(); // Разрешаем вертикальные свайпы для скролла
 
     // Настройка цветовой схемы
     tg.setHeaderColor("#1a1a1a"); // Темный цвет заголовка
@@ -75,29 +61,17 @@ function App() {
   const renderPage = () => {
     switch (activeTab) {
       case "leaders":
-        return <LeadersPage userData={userData} />;
+        return <LeadersPage />;
       case "tasks":
-        return <TasksPage userData={userData} />;
+        return <TasksPage />;
       case "mining":
-        return (
-          <MiningPage
-            showPopup={showPopup}
-            setShowPopup={setShowPopup}
-            userData={userData}
-          />
-        );
+        return <MiningPage showPopup={showPopup} setShowPopup={setShowPopup} />;
       case "exchange":
-        return <ExchangePage userData={userData} />;
+        return <ExchangePage />;
       case "profile":
-        return <ProfilePage userData={userData} />;
+        return <ProfilePage />;
       default:
-        return (
-          <MiningPage
-            showPopup={showPopup}
-            setShowPopup={setShowPopup}
-            userData={userData}
-          />
-        );
+        return <MiningPage showPopup={showPopup} setShowPopup={setShowPopup} />;
     }
   };
 
