@@ -29,25 +29,25 @@ body {
   min-width: 320px;
   min-height: var(--tg-viewport-height, 100vh);
   background-color: #101010;
-  overflow: hidden;
-  /* Убираем скролл для полноэкранного режима */
-  position: fixed;
+  overflow-x: hidden; /* Отключаем горизонтальный скролл */
+  overflow-y: auto; /* Включаем вертикальный скролл */
   width: 100%;
-  height: var(--tg-viewport-height, 100vh);
 }
 
 #root {
   width: 100%;
-  height: var(--tg-viewport-height, 100vh);
+  min-height: var(--tg-viewport-height, 100vh);
   background-color: #101010;
-  overflow: hidden;
+  overflow-x: hidden; /* Отключаем горизонтальный скролл */
+  overflow-y: auto; /* Включаем вертикальный скролл */
 }
 
 .app {
   width: 100%;
-  height: var(--tg-viewport-height, 100vh);
+  min-height: var(--tg-viewport-height, 100vh);
   background-color: #101010;
-  overflow: hidden;
+  overflow-x: hidden; /* Отключаем горизонтальный скролл */
+  overflow-y: auto; /* Включаем вертикальный скролл */
   display: flex;
   flex-direction: column;
 }

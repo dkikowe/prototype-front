@@ -20,7 +20,7 @@ function App() {
     // Настройка полноэкранного режима
     tg.expand(); // Раскрывает WebApp на полный экран
     tg.enableClosingConfirmation(); // Подтверждение закрытия
-    tg.disableVerticalSwipes(); // Отключает вертикальные свайпы
+    // tg.disableVerticalSwipes(); // Разрешаем вертикальные свайпы для скролла
 
     // Настройка цветовой схемы
     tg.setHeaderColor("#1a1a1a"); // Темный цвет заголовка
