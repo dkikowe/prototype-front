@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import styles from "./Page.module.scss";
 import FoundPopup from "../components/FoundPopup";
 
-const MiningPage = ({ showPopup, setShowPopup, userInfo }) => {
+const MiningPage = ({ showPopup, setShowPopup }) => {
   const [activeTab, setActiveTab] = useState("token_finder");
   const [isScanning, setIsScanning] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -22,29 +22,35 @@ const MiningPage = ({ showPopup, setShowPopup, userInfo }) => {
   const [liveFeedMessages, setLiveFeedMessages] = useState([]);
   const isInitialized = React.useRef(false);
 
+  // >>>>> СТРОГО ЧЕРЕЗ Telegram initData <<<<<
   const [tgUser, setTgUser] = useState(null);
+  const [startParam, setStartParam] = useState(null);
+  const [rawInitData, setRawInitData] = useState(null);
 
   useEffect(() => {
     const tg = window?.Telegram?.WebApp;
-    if (!tg) return;
-    tg.ready();
-    const u = tg.initDataUnsafe?.user;
-    if (u) {
-      setTgUser({
-        id: u.id,
-        username: u.username || null,
-        firstName: u.first_name || null,
-        lastName: u.last_name || null,
-        displayName: u.first_name || u.username || "Пользователь",
-      });
+    if (!tg) {
+      // фолбэк только для локальной разработки вне Telegram
+      setTgUser({ username: "username_telegram", first_name: "Пользователь" });
+      return;
     }
+    tg.ready();
+    tg.expand?.();
+
+    const u = tg.initDataUnsafe?.user || null;
+    setTgUser(u);
+    setStartParam(tg.initDataUnsafe?.start_param ?? null);
+    setRawInitData(tg.initData ?? null);
   }, []);
 
   const uiUser = useMemo(() => {
-    if (userInfo) return userInfo;
-    if (tgUser) return tgUser;
-    return { username: "username_telegram", displayName: "Пользователь" };
-  }, [userInfo, tgUser]);
+    if (!tgUser)
+      return { displayName: "Пользователь", username: "username_telegram" };
+    return {
+      displayName: tgUser.first_name || tgUser.username || "Пользователь",
+      username: tgUser.username || "username_telegram",
+    };
+  }, [tgUser]);
 
   const liveFeedTemplates = [
     "user#{number}: {amount}₿ | 0x{hash}",
@@ -98,24 +104,25 @@ const MiningPage = ({ showPopup, setShowPopup, userInfo }) => {
   };
 
   const scrollToTop = () => {
-    if (terminalRef.current && !isUserScrolling) {
+    if (terminalRef.current && !isUserScrolling)
       terminalRef.current.scrollTop = 0;
-    }
   };
 
   const handleTerminalScroll = () => {
     setIsUserScrolling(true);
     if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
-    scrollTimeoutRef.current = setTimeout(() => {
-      setIsUserScrolling(false);
-    }, 2000);
+    scrollTimeoutRef.current = setTimeout(
+      () => setIsUserScrolling(false),
+      2000
+    );
   };
 
+  // Первичная инициализация логов — с использованием имени из initData
   useEffect(() => {
-    if (isInitialized.current) return;
+    if (isInitialized.current || !uiUser) return;
     isInitialized.current = true;
 
-    const initialLiveFeedMessages = [
+    const initialLive = [
       "[19:26] > user#1029: 3214₿ | 0xB2..4D",
       "[19:26] > @agent47: 589₿ | 0x6E..7F",
       "[19:26] > user#2288: 2301₿ | 0xD4..9E",
@@ -126,10 +133,10 @@ const MiningPage = ({ showPopup, setShowPopup, userInfo }) => {
       "[19:28] > @oracle: 8392₿ | 0xDE..F5",
       "[19:28] > user#1190: 351₿ | 0x1A..B7",
     ];
-    setLiveFeedMessages(initialLiveFeedMessages);
+    setLiveFeedMessages(initialLive);
 
-    const username = uiUser?.username || "username";
-    const initialTerminalMessages = [
+    const username = uiUser.username || "username";
+    const initialTerminal = [
       "[BOOT] Подключение к BTC Prototype...",
       `[AUTH] Пользователь: @${username} — проверка доступа...`,
       "[OK] Соединение установлено",
@@ -138,14 +145,11 @@ const MiningPage = ({ showPopup, setShowPopup, userInfo }) => {
       "[INFO] Готово к поиску. Нажми «Поиск», чтобы начать скан.",
     ];
 
-    let currentIndex = 0;
+    let i = 0;
     const addMessage = () => {
-      if (currentIndex < initialTerminalMessages.length) {
-        setTerminalLogs((prev) => [
-          initialTerminalMessages[currentIndex],
-          ...prev,
-        ]);
-        currentIndex++;
+      if (i < initialTerminal.length) {
+        setTerminalLogs((prev) => [initialTerminal[i], ...prev]);
+        i++;
         setTimeout(addMessage, 500);
       } else {
         const scanMessages = [
@@ -155,23 +159,21 @@ const MiningPage = ({ showPopup, setShowPopup, userInfo }) => {
           "[DETECT] Найден активный адрес",
           "[ADDR] 0xA3b7...E2",
           "[BALANCE] 0.057 BTC",
-          `[BOT] Отличная находка, ${uiUser?.displayName || "Пользователь"}.`,
+          `[BOT] Отличная находка, ${uiUser.displayName}.`,
           "[INFO] Поиск завершён",
         ];
-        let scanIndex = 0;
-        const addScanMessage = () => {
-          if (scanIndex < scanMessages.length) {
-            setTerminalLogs((prev) => [scanMessages[scanIndex], ...prev]);
-            scanIndex++;
-            setTimeout(addScanMessage, 800);
+        let s = 0;
+        const addScan = () => {
+          if (s < scanMessages.length) {
+            setTerminalLogs((prev) => [scanMessages[s], ...prev]);
+            s++;
+            setTimeout(addScan, 800);
           }
         };
-        setTimeout(addScanMessage, 1000);
+        setTimeout(addScan, 1000);
       }
     };
-
     setTimeout(addMessage, 1000);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [uiUser]);
 
   useEffect(() => {
@@ -180,28 +182,22 @@ const MiningPage = ({ showPopup, setShowPopup, userInfo }) => {
 
   useEffect(() => {
     if (activeTab !== "live_feed") return;
-    const addNewMessage = () => {
-      const newMessage = generateRandomMessage();
+    const tick = () => {
       setLiveFeedMessages((prev) => {
-        const updated = [newMessage, ...prev];
-        return updated.length > 20 ? updated.slice(0, 20) : updated;
+        const next = [generateRandomMessage(), ...prev];
+        return next.length > 20 ? next.slice(0, 20) : next;
       });
-    };
-    const scheduleNextMessage = () => {
       const delay = Math.random() * 2000 + 1000;
-      setTimeout(() => {
-        addNewMessage();
-        scheduleNextMessage();
-      }, delay);
+      timer = setTimeout(tick, delay);
     };
-    scheduleNextMessage();
+    let timer = setTimeout(tick, Math.random() * 2000 + 1000);
+    return () => clearTimeout(timer);
   }, [activeTab]);
 
   useEffect(() => {
     const updateWidth = () => {
-      if (sliderContainerRef.current) {
+      if (sliderContainerRef.current)
         setContainerWidth(sliderContainerRef.current.clientWidth);
-      }
     };
     updateWidth();
     window.addEventListener("resize", updateWidth);
@@ -214,24 +210,18 @@ const MiningPage = ({ showPopup, setShowPopup, userInfo }) => {
     touchStartXRef.current = e.touches[0].clientX;
     setTouchDelta(0);
   };
-
   const onTouchMove = (e) => {
     if (!isTouching) return;
-    const currentX = e.touches[0].clientX;
-    setTouchDelta(currentX - touchStartXRef.current);
+    setTouchDelta(e.touches[0].clientX - touchStartXRef.current);
   };
-
   const onTouchEnd = () => {
     if (!isTouching) return;
     const threshold = 40;
     const delta = touchDelta;
     setIsTouching(false);
     setTouchDelta(0);
-    if (delta < -threshold && currentSlide < 1) {
-      setCurrentSlide(1);
-    } else if (delta > threshold && currentSlide > 0) {
-      setCurrentSlide(0);
-    }
+    if (delta < -threshold && currentSlide < 1) setCurrentSlide(1);
+    else if (delta > threshold && currentSlide > 0) setCurrentSlide(0);
   };
 
   const startScan = () => {
@@ -248,6 +238,7 @@ const MiningPage = ({ showPopup, setShowPopup, userInfo }) => {
     <div className={styles.page}>
       <div className={styles.pageContent}>
         <div className={styles.prototypeText}>prototype</div>
+
         <div className={styles.balanceSection}>
           <div className={styles.balanceLabel}>Балансы</div>
           <div className={styles.balanceValues}>
@@ -298,11 +289,9 @@ const MiningPage = ({ showPopup, setShowPopup, userInfo }) => {
                   </div>
                   <div className={styles.welcomeText}>
                     Удачного поиска, <br />
-                    {uiUser?.displayName || "Пользователь"}!
+                    {uiUser.displayName}!
                   </div>
-                  <div className={styles.usernameText}>
-                    @{uiUser?.username || "username_telegram"}
-                  </div>
+                  <div className={styles.usernameText}>@{uiUser.username}</div>
                 </div>
                 <div className={styles.largeHash}>
                   <img src="/mine-icons/reshetka.svg" alt="hash" />
@@ -318,11 +307,9 @@ const MiningPage = ({ showPopup, setShowPopup, userInfo }) => {
                   </div>
                   <div className={styles.welcomeText}>
                     Удачного поиска, <br />
-                    {uiUser?.displayName || "Пользователь"}!
+                    {uiUser.displayName}!
                   </div>
-                  <div className={styles.usernameText}>
-                    @{uiUser?.username || "username_telegram"}
-                  </div>
+                  <div className={styles.usernameText}>@{uiUser.username}</div>
                 </div>
                 <div className={styles.largeHash}>
                   <img src="/mine-icons/reshetka.svg" alt="hash" />
@@ -416,9 +403,9 @@ const MiningPage = ({ showPopup, setShowPopup, userInfo }) => {
                       {log}
                     </div>
                   ))
-                : liveFeedMessages.map((message, index) => (
+                : liveFeedMessages.map((msg, index) => (
                     <div key={index} className={styles.logLine}>
-                      {message}
+                      {msg}
                     </div>
                   ))}
             </div>
