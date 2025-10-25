@@ -2,13 +2,11 @@
   min-height: var(--tg-viewport-height, 100vh);
   background-color: #101010;
   background-image: url('/mine-icons/shine.svg');
-  background-position: left 80%;
+  background-position: left 85%;
   background-repeat: no-repeat;
   background-size: 200px 200px;
   color: white;
   padding-bottom: 80px; /* Отступ для навигационной панели */
-  overflow-y: auto; /* Включаем вертикальный скролл */
-  overflow-x: hidden; /* Отключаем горизонтальный скролл */
 }
 
 .pageContent {

@@ -34,8 +34,9 @@ function App() {
           "--tg-viewport-height",
           `${h}px`
         );
-        // Устанавливаем минимальную высоту для body
-        document.body.style.minHeight = `${h}px`;
+        // Устанавливаем высоту для body чтобы обеспечить скролл
+        document.body.style.height = `${h}px`;
+        document.body.style.overflowY = "auto";
       }
     };
 

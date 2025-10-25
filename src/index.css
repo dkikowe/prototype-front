@@ -21,7 +21,7 @@
 }
 
 html {
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 body {
@@ -29,8 +29,7 @@ body {
   min-width: 320px;
   min-height: var(--tg-viewport-height, 100vh);
   background-color: #101010;
-  overflow-x: hidden; /* Отключаем горизонтальный скролл */
-  overflow-y: auto; /* Включаем вертикальный скролл */
+  overflow-x: hidden;
   width: 100%;
 }
 
@@ -38,16 +37,12 @@ body {
   width: 100%;
   min-height: var(--tg-viewport-height, 100vh);
   background-color: #101010;
-  overflow-x: hidden; /* Отключаем горизонтальный скролл */
-  overflow-y: auto; /* Включаем вертикальный скролл */
 }
 
 .app {
   width: 100%;
   min-height: var(--tg-viewport-height, 100vh);
   background-color: #101010;
-  overflow-x: hidden; /* Отключаем горизонтальный скролл */
-  overflow-y: auto; /* Включаем вертикальный скролл */
   display: flex;
   flex-direction: column;
 }
