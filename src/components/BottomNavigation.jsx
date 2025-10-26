@@ -21,7 +21,7 @@ const BottomNavigation = ({ activeTab, onTabChange, showPopup }) => {
     {
       id: "exchange",
       label: "Обмен",
-      icon: "/nav-icons/обмен.svg",
+      icon: "/nav-icons/обмен.png",
     },
     {
       id: "profile",
