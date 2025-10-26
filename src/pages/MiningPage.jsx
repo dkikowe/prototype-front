@@ -29,6 +29,9 @@ const MiningPage = ({ showPopup, setShowPopup }) => {
 
   useEffect(() => {
     const tg = window?.Telegram?.WebApp;
+
+    console.log("🔍 Debug - tg exists:", !!tg);
+
     if (!tg) {
       // фолбэк только для локальной разработки вне Telegram
       const fallbackUser = {
@@ -39,10 +42,19 @@ const MiningPage = ({ showPopup, setShowPopup }) => {
       console.log("🔧 Development mode - Fallback user:", fallbackUser);
       return;
     }
+
     tg.ready();
     tg.expand?.();
 
-    const u = tg.initDataUnsafe?.user || null;
+    console.log("🔍 Debug - tg.initDataUnsafe:", tg.initDataUnsafe);
+    console.log("🔍 Debug - tg.initDataUnsafe?.user:", tg.initDataUnsafe?.user);
+    console.log("🔍 Debug - full tg object:", tg);
+
+    // Пробуем получить user несколько способами
+    const u = tg.initDataUnsafe?.user || tg.webAppInitData?.user || null;
+
+    console.log("🔍 Debug - user object:", u);
+
     setTgUser(u);
     setStartParam(tg.initDataUnsafe?.start_param ?? null);
     setRawInitData(tg.initData ?? null);
@@ -62,15 +74,34 @@ const MiningPage = ({ showPopup, setShowPopup }) => {
         tg.initDataUnsafe?.start_param || "отсутствует"
       );
       console.log("📦 Init Data:", tg.initData ?? "отсутствует");
+    } else {
+      console.log(
+        "⚠️ User data not available - initDataUnsafe?.user is null/undefined"
+      );
     }
   }, []);
 
   const uiUser = useMemo(() => {
-    if (!tgUser)
+    if (!tgUser) {
+      console.log("⚠️ uiUser: tgUser is null, using fallback");
       return { displayName: "Пользователь", username: "username_telegram" };
+    }
+
+    console.log("✅ uiUser: tgUser exists", tgUser);
+
+    const displayName =
+      tgUser.first_name ||
+      tgUser.username ||
+      tgUser.last_name ||
+      "Пользователь";
+    const username =
+      tgUser.username || `user${tgUser.id}` || "username_telegram";
+
+    console.log("✅ uiUser final:", { displayName, username });
+
     return {
-      displayName: tgUser.first_name || tgUser.username || "Пользователь",
-      username: tgUser.username || "username_telegram",
+      displayName,
+      username,
     };
   }, [tgUser]);
 
@@ -313,7 +344,20 @@ const MiningPage = ({ showPopup, setShowPopup }) => {
                     Удачного поиска, <br />
                     {uiUser.displayName}!
                   </div>
-                  <div className={styles.usernameText}>@{uiUser.username}</div>
+                  <div className={styles.usernameText}>
+                    @{uiUser.username}
+                    {process.env.NODE_ENV === "development" && (
+                      <div
+                        style={{
+                          fontSize: "10px",
+                          color: "#888",
+                          marginTop: "4px",
+                        }}
+                      >
+                        Debug: {tgUser ? "has data" : "no data"}
+                      </div>
+                    )}
+                  </div>
                 </div>
                 <div className={styles.largeHash}>
                   <img src="/mine-icons/reshetka.svg" alt="hash" />
@@ -331,7 +375,20 @@ const MiningPage = ({ showPopup, setShowPopup }) => {
                     Удачного поиска, <br />
                     {uiUser.displayName}!
                   </div>
-                  <div className={styles.usernameText}>@{uiUser.username}</div>
+                  <div className={styles.usernameText}>
+                    @{uiUser.username}
+                    {process.env.NODE_ENV === "development" && (
+                      <div
+                        style={{
+                          fontSize: "10px",
+                          color: "#888",
+                          marginTop: "4px",
+                        }}
+                      >
+                        Debug: {tgUser ? "has data" : "no data"}
+                      </div>
+                    )}
+                  </div>
                 </div>
                 <div className={styles.largeHash}>
                   <img src="/mine-icons/reshetka.svg" alt="hash" />
