@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./FoundPopup.module.scss";
 
 const FoundPopup = ({
@@ -6,6 +6,23 @@ const FoundPopup = ({
   walletAddress = "0x4f3a9b2Sas...",
   collectedAmount = 257,
 }) => {
+  useEffect(() => {
+    // Предотвращаем зум на телефонах
+    const preventZoom = (e) => {
+      if (e.touches && e.touches.length > 1) {
+        e.preventDefault();
+      }
+    };
+
+    document.addEventListener("touchmove", preventZoom, { passive: false });
+    document.addEventListener("touchend", preventZoom, { passive: false });
+
+    return () => {
+      document.removeEventListener("touchmove", preventZoom);
+      document.removeEventListener("touchend", preventZoom);
+    };
+  }, []);
+
   return (
     <div className={styles.popupOverlay} onClick={onClose}>
       <div className={styles.popupContent} onClick={(e) => e.stopPropagation()}>

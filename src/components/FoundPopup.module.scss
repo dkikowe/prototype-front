@@ -11,6 +11,9 @@
   justify-content: center;
   z-index: 1001;
   animation: fadeIn 0.3s ease-out;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .popupContent {
@@ -18,6 +21,9 @@
   align-items: center;
   justify-content: center;
   animation: scaleIn 0.3s ease-out;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .foundCard {
@@ -35,6 +41,9 @@ height: 400px;
   align-items: center;
   padding: 25px;
   gap: 25px;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 
