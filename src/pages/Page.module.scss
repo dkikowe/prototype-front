@@ -528,9 +528,18 @@ outline: none;
 .logLine {
   font-family: "JetBrains Mono", "Courier New", monospace;
   font-size: 12px;
-  color: #E0E0E0;
   line-height: 1.4;
   margin-bottom: 2px;
+  
+  /* 1. Основной цвет текста - белый */
+  color: #E0E0E0; 
+  
+  /* 2. Добавляем глоу-эффект с помощью text-shadow */
+  text-shadow: 
+    /* Создаем рассеянное свечение вокруг текста */
+    0 0 4px rgba(81, 100, 206, 0.5),  /* Среднее синее/фиолетовое свечение */
+    0 0 8px rgba(81, 100, 206, 0.3);  /* Более сильное, рассеянное синее/фиолетовое свечение */
+    /* Цвет (81, 100, 206) взят из вашего primaryButton */
 }
 
 .terminalInput {
@@ -539,14 +548,28 @@ outline: none;
   left: 0;
   right: 0;
   height: 60px;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0.95) 100%);
-  backdrop-filter: blur(25px);
+
+background: rgba(16, 16, 16, 0.69);
   display: flex;
   align-items: center;
   padding: 0 15px;
   gap: 10px;
   border-radius: 0 0 20px 20px;
   z-index: 10;
+  
+  // Дополнительный слой блюра
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    backdrop-filter: blur(200px) brightness(1.2);
+    pointer-events: none;
+    border-radius: 0 0 20px 20px;
+    z-index: 0;
+  }
 }
 
 .inputField {
