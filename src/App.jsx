@@ -17,6 +17,19 @@ function App() {
     // Инициализация Telegram WebApp
     tg.ready();
 
+    // Получаем данные пользователя из Telegram
+    const user = tg.initDataUnsafe?.user;
+    if (user) {
+      console.log("Telegram User Data:", {
+        username: user.username,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        id: user.id,
+        language_code: user.language_code,
+        is_premium: user.is_premium,
+      });
+    }
+
     // Настройка полноэкранного режима
     tg.expand(); // Раскрывает WebApp на полный экран
     tg.enableClosingConfirmation(); // Подтверждение закрытия

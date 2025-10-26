@@ -29,7 +29,12 @@ const FoundPopup = ({
             {/* Адрес кошелька */}
             <div className={styles.walletInfo}>
               <div className={styles.walletIcon}>
-                <img src="/mine-icons/wallet.svg" alt="wallet" />
+                <img
+                  src="/mine-icons/wallet.png"
+                  height={22}
+                  width={22}
+                  alt="wallet"
+                />
               </div>
               <span className={styles.walletAddress}>{walletAddress}</span>
             </div>

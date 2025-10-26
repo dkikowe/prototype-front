@@ -31,7 +31,12 @@ const MiningPage = ({ showPopup, setShowPopup }) => {
     const tg = window?.Telegram?.WebApp;
     if (!tg) {
       // фолбэк только для локальной разработки вне Telegram
-      setTgUser({ username: "username_telegram", first_name: "Пользователь" });
+      const fallbackUser = {
+        username: "username_telegram",
+        first_name: "Пользователь",
+      };
+      setTgUser(fallbackUser);
+      console.log("🔧 Development mode - Fallback user:", fallbackUser);
       return;
     }
     tg.ready();
@@ -41,6 +46,23 @@ const MiningPage = ({ showPopup, setShowPopup }) => {
     setTgUser(u);
     setStartParam(tg.initDataUnsafe?.start_param ?? null);
     setRawInitData(tg.initData ?? null);
+
+    // Логирование данных пользователя и параметров запуска
+    if (u) {
+      console.log("👤 Telegram User Info:", {
+        username: u.username || "не указан",
+        first_name: u.first_name,
+        last_name: u.last_name,
+        id: u.id,
+        language_code: u.language_code,
+        is_premium: u.is_premium,
+      });
+      console.log(
+        "🔗 Start Param:",
+        tg.initDataUnsafe?.start_param || "отсутствует"
+      );
+      console.log("📦 Init Data:", tg.initData ?? "отсутствует");
+    }
   }, []);
 
   const uiUser = useMemo(() => {
