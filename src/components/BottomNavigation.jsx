@@ -6,7 +6,7 @@ const BottomNavigation = ({ activeTab, onTabChange, showPopup }) => {
     {
       id: "leaders",
       label: "Лидеры",
-      icon: "/nav-icons/Лидеры.svg",
+      icon: "/nav-icons/лидеры.png",
     },
     {
       id: "tasks",
