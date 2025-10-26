@@ -11,7 +11,7 @@ const BottomNavigation = ({ activeTab, onTabChange, showPopup }) => {
     {
       id: "tasks",
       label: "Задания",
-      icon: "/nav-icons/задания.svg",
+      icon: "/nav-icons/задания.png",
     },
     {
       id: "mining",
