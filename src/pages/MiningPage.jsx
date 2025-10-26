@@ -90,10 +90,7 @@ const MiningPage = ({ showPopup, setShowPopup }) => {
     console.log("✅ uiUser: tgUser exists", tgUser);
 
     const displayName =
-      tgUser.first_name ||
-      tgUser.username ||
-      tgUser.last_name ||
-      "Пользователь";
+      tgUser.first_name || tgUser.username || tgUser.last_name || "name";
     const username =
       tgUser.username || `user${tgUser.id}` || "username_telegram";
 
