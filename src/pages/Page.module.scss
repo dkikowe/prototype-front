@@ -518,7 +518,7 @@ outline: none;
 }
 
 .terminalLogs {
-  padding: 20px 15px 80px 15px; /* Добавляем отступ снизу для инпута */
+  padding: 20px 15px 55px 15px; /* Добавляем отступ снизу для инпута */
   flex: 1;
   overflow-y: auto;
   display: flex;
@@ -526,20 +526,12 @@ outline: none;
 }
 
 .logLine {
-  font-family: "JetBrains Mono", "Courier New", monospace;
-  font-size: 12px;
-  line-height: 1.4;
+  font-family: "SF Pro Display", sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 140%;
+  color: #e1e1e1;
   margin-bottom: 2px;
-  
-  /* 1. Основной цвет текста - белый */
-  color: #E0E0E0; 
-  
-  /* 2. Добавляем глоу-эффект с помощью text-shadow */
-  text-shadow: 
-    /* Создаем рассеянное свечение вокруг текста */
-    0 0 4px rgba(81, 100, 206, 0.5),  /* Среднее синее/фиолетовое свечение */
-    0 0 8px rgba(81, 100, 206, 0.3);  /* Более сильное, рассеянное синее/фиолетовое свечение */
-    /* Цвет (81, 100, 206) взят из вашего primaryButton */
 }
 
 .terminalInput {
