@@ -1,7 +1,7 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import styles from "./ExchangePage.module.scss";
 
-const ExchangePage = () => {
+const ExchangePage = ({ onInputFocus }) => {
   const RATE_BTC_TO_USDT = 0.00012; // 100 BTC = 0.012 USDT
   const [btcValue, setBtcValue] = useState("");
   const [usdtValue, setUsdtValue] = useState("");
@@ -36,6 +36,40 @@ const ExchangePage = () => {
     }
     setBtcValue((num / RATE_BTC_TO_USDT).toFixed(6));
   }, []);
+
+  const handleFocus = useCallback(() => {
+    if (onInputFocus) onInputFocus(true);
+  }, [onInputFocus]);
+
+  const handleBlur = useCallback(() => {
+    if (onInputFocus) onInputFocus(false);
+  }, [onInputFocus]);
+
+  useEffect(() => {
+    const btcInput = btcRef.current;
+    const usdtInput = usdtRef.current;
+
+    if (btcInput) {
+      btcInput.addEventListener("focus", handleFocus);
+      btcInput.addEventListener("blur", handleBlur);
+    }
+
+    if (usdtInput) {
+      usdtInput.addEventListener("focus", handleFocus);
+      usdtInput.addEventListener("blur", handleBlur);
+    }
+
+    return () => {
+      if (btcInput) {
+        btcInput.removeEventListener("focus", handleFocus);
+        btcInput.removeEventListener("blur", handleBlur);
+      }
+      if (usdtInput) {
+        usdtInput.removeEventListener("focus", handleFocus);
+        usdtInput.removeEventListener("blur", handleBlur);
+      }
+    };
+  }, [handleFocus, handleBlur]);
   return (
     <div className={styles.exchangePage}>
       <div className={styles.prototypeText}>prototype</div>

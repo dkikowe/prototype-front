@@ -1,7 +1,12 @@
 import React from "react";
 import styles from "./BottomNavigation.module.scss";
 
-const BottomNavigation = ({ activeTab, onTabChange, showPopup }) => {
+const BottomNavigation = ({
+  activeTab,
+  onTabChange,
+  showPopup,
+  isInputFocused,
+}) => {
   const tabs = [
     {
       id: "leaders",
@@ -34,7 +39,7 @@ const BottomNavigation = ({ activeTab, onTabChange, showPopup }) => {
     <div
       className={`${styles.bottomNavigation} ${
         showPopup ? styles.blurred : ""
-      }`}
+      } ${isInputFocused ? styles.hidden : ""}`}
     >
       <div className={styles.navContent}>
         {tabs.map((tab) => (

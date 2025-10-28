@@ -9,6 +9,7 @@ import ProfilePage from "./pages/ProfilePage";
 function App() {
   const [activeTab, setActiveTab] = useState("mining");
   const [showPopup, setShowPopup] = useState(false);
+  const [isInputFocused, setIsInputFocused] = useState(false);
 
   useEffect(() => {
     const tg = window?.Telegram?.WebApp;
@@ -80,7 +81,7 @@ function App() {
       case "mining":
         return <MiningPage showPopup={showPopup} setShowPopup={setShowPopup} />;
       case "exchange":
-        return <ExchangePage />;
+        return <ExchangePage onInputFocus={setIsInputFocused} />;
       case "profile":
         return <ProfilePage />;
       default:
@@ -95,6 +96,7 @@ function App() {
         activeTab={activeTab}
         onTabChange={setActiveTab}
         showPopup={showPopup}
+        isInputFocused={isInputFocused}
       />
     </div>
   );
