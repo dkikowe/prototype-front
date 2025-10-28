@@ -1,8 +1,8 @@
 .exchangePage {
-  min-height: var(--tg-viewport-height, 100vh);
+  min-height: 100vh;
   background-color: #000;
   background-image: url('/exchange/bg.png');
-  background-size: 100% 50%;
+  background-size: 100% 50vh;
   background-position: top center;
   background-repeat: no-repeat;
   color: white;
