@@ -186,41 +186,73 @@ const MiningPage = ({ showPopup, setShowPopup }) => {
     setLiveFeedMessages(initialLive);
 
     const username = uiUser.username || "username";
+    const displayName = uiUser.displayName || "Пользователь";
     const initialTerminal = [
       "[BOOT] Подключение к BTC Prototype...",
       `[AUTH] Пользователь: @${username} — проверка доступа...`,
       "[OK] Соединение установлено",
-      "[SYNC] Синхронизация узлов: 12% → 56% → 95% → 100%",
       "[DATA] Игровой баланс: 1100₿ • Энергия: 12",
       "[INFO] Готово к поиску. Нажми «Поиск», чтобы начать скан.",
     ];
 
     let i = 0;
     const addMessage = () => {
-      if (i < initialTerminal.length) {
+      if (i < 3) {
+        // Добавляем первые 3 сообщения
         setTerminalLogs((prev) => [initialTerminal[i], ...prev]);
         i++;
         setTimeout(addMessage, 500);
-      } else {
-        const scanMessages = [
-          "[SCAN] Подключение к узлам... ОК",
-          "[NET] Синхронизация... 17% → 62% → 100%",
-          "[HASH] Проверка блоков... ОК",
-          "[DETECT] Найден активный адрес",
-          "[ADDR] 0xA3b7...E2",
-          "[BALANCE] 0.057 BTC",
-          `[BOT] Отличная находка, ${uiUser.displayName}.`,
-          "[INFO] Поиск завершён",
-        ];
-        let s = 0;
-        const addScan = () => {
-          if (s < scanMessages.length) {
-            setTerminalLogs((prev) => [scanMessages[s], ...prev]);
-            s++;
-            setTimeout(addScan, 800);
+      } else if (i === 3) {
+        // Добавляем строку синхронизации (прогресс-бар сверху, текст снизу)
+        setTerminalLogs((prev) => [
+          getProgressBar(0),
+          "[SYNC] Синхронизация узлов 0%",
+          ...prev,
+        ]);
+
+        // Анимируем синхронизацию
+        const progressSteps = [0, 10, 25, 37, 49, 56, 85, 93, 97, 100];
+        let progressIndex = 0;
+
+        const updateSyncProgress = () => {
+          if (progressIndex < progressSteps.length) {
+            const currentPercent = progressSteps[progressIndex];
+            setTerminalLogs((prev) => {
+              const newLogs = [...prev];
+              // Обновляем прогресс-бар
+              const progressLineIndex = newLogs.findIndex((log) =>
+                /^[█░\s]+/.test(log)
+              );
+              if (progressLineIndex !== -1) {
+                newLogs[progressLineIndex] = getProgressBar(currentPercent);
+              }
+              // Обновляем текст синхронизации с процентом
+              const textLineIndex = newLogs.findIndex((log) =>
+                log.startsWith("[SYNC] Синхронизация узлов")
+              );
+              if (textLineIndex !== -1) {
+                newLogs[
+                  textLineIndex
+                ] = `[SYNC] Синхронизация узлов ${currentPercent}%`;
+              }
+              return newLogs;
+            });
+            progressIndex++;
+            if (progressIndex < progressSteps.length) {
+              setTimeout(updateSyncProgress, 400);
+            } else {
+              // После завершения синхронизации добавляем остальные сообщения
+              setTimeout(() => {
+                setTerminalLogs((prev) => [initialTerminal[i], ...prev]);
+                setTimeout(() => {
+                  setTerminalLogs((prev) => [initialTerminal[i + 1], ...prev]);
+                }, 500);
+              }, 500);
+            }
           }
         };
-        setTimeout(addScan, 1000);
+
+        setTimeout(updateSyncProgress, 500);
       }
     };
     setTimeout(addMessage, 1000);
@@ -274,14 +306,62 @@ const MiningPage = ({ showPopup, setShowPopup }) => {
     else if (delta > threshold && currentSlide > 0) setCurrentSlide(0);
   };
 
+  const getProgressBar = (percent) => {
+    if (percent === undefined || percent === null) return "";
+    const blocks = 10;
+    const filled = Math.floor((percent / 100) * blocks);
+    const progressBar = "█".repeat(filled) + "░".repeat(blocks - filled);
+    return `${progressBar} ${percent}%`;
+  };
+
   const startScan = () => {
     if (isScanning) return;
     setIsScanning(true);
     setShowPopup(false);
-    setTimeout(() => {
-      setIsScanning(false);
-      setShowPopup(true);
-    }, 3000);
+
+    const username = uiUser.username || "username";
+    const displayName = uiUser.displayName || "Пользователь";
+
+    // Сначала добавляем подготовительные сообщения
+    const prepMessages = ["[SCAN] Подключение к узлам..."];
+
+    const finalMessages = [
+      "[HASH] Проверка блоков... ОК",
+      "[DETECT] Найден активный адрес",
+      "[ADDR] 0xA3b7...E2",
+      "[BALANCE] 0.057 BTC",
+      `[BOT] Отличная находка, ${displayName}.`,
+      "[INFO] Поиск завершён",
+    ];
+
+    let messageIndex = 0;
+    const addPrepMessage = () => {
+      if (messageIndex < prepMessages.length) {
+        setTerminalLogs((prev) => [prepMessages[messageIndex], ...prev]);
+        messageIndex++;
+        setTimeout(addPrepMessage, 500);
+      } else {
+        // Сразу переходим к финальным сообщениям
+        addFinalMessages();
+      }
+    };
+
+    const addFinalMessages = () => {
+      let finalIndex = 0;
+      const addFinal = () => {
+        if (finalIndex < finalMessages.length) {
+          setTerminalLogs((prev) => [finalMessages[finalIndex], ...prev]);
+          finalIndex++;
+          setTimeout(addFinal, 600);
+        } else {
+          setIsScanning(false);
+          setShowPopup(true);
+        }
+      };
+      setTimeout(addFinal, 500);
+    };
+
+    setTimeout(addPrepMessage, 300);
   };
 
   return (
@@ -450,7 +530,7 @@ const MiningPage = ({ showPopup, setShowPopup }) => {
                 alt="token-finder"
                 className={styles.tabIcon}
               />
-              <span className={styles.tabText}>Token_finder</span>
+              <span className={styles.tabText}>BTC поиск</span>
             </div>
             <div
               className={`${styles.tab} ${
@@ -463,7 +543,7 @@ const MiningPage = ({ showPopup, setShowPopup }) => {
                 alt="live"
                 className={styles.liveFeedIcon}
               />
-              <span className={styles.tabText}>Live_feed</span>
+              <span className={styles.tabText}>Лайв лента</span>
             </div>
           </div>
 
