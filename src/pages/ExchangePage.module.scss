@@ -1,0 +1,350 @@
+.exchangePage {
+  min-height: var(--tg-viewport-height, 100vh);
+  background-color: #000;
+  background-image: url('/exchange/bg.png');
+  background-size: 100% 50%;
+  background-position: top center;
+  background-repeat: no-repeat;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  padding-bottom: 100px;
+  position: relative;
+}
+
+.prototypeText {
+  font-family: "Pixelify Sans", sans-serif;
+  font-weight: 500;
+  font-size: 25px;
+  line-height: 130%;
+  text-align: center;
+  color: #fff;
+  margin-top: 50px;
+}
+
+.exchangeCard {
+  max-width: 90%;
+  margin: 0 auto;
+  height: 450px;
+  background: rgba(0, 0, 0, 0.101);
+  border-radius: 20px;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+  backdrop-filter: blur(25px);
+  overflow: visible;
+  z-index: 1;
+  margin-top: 250px;
+
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: 20px;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0) 70%,
+      rgba(0, 0, 0, 0.85) 100%
+    );
+    z-index: 0;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    padding: 1px;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.2) 0%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    -webkit-mask-composite: xor;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  > * {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+.symbolsRow {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  transform: rotate(-1.5deg);
+  margin-top: -50px;
+  margin-left: -25px;
+  height: 146px;
+
+  span:nth-child(1) {
+    width: 105px;
+    margin-right: 36px;
+  }
+  span:nth-child(2) {
+    width: 71px;
+    margin-right: 36px;
+  }
+  span:nth-child(3) {
+    width: 102px;
+  }
+}
+
+.symbol {
+  font-family: "Manrope", sans-serif;
+  font-size: 146px;
+  font-weight: 700;
+  -webkit-text-stroke: 9.37px white;
+  -webkit-text-fill-color: transparent;
+  line-height: 1;
+  text-align: left;
+  display: block;
+}
+
+.title {
+  font-family: "Manrope", sans-serif;
+font-weight: 700;
+font-size: 22px;
+line-height: 130%;
+text-align: center;
+color: #fff;
+margin-top: 30px;
+}
+
+.currencyContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.currencyBlock {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px;
+  background: linear-gradient(
+    135deg,
+    rgba(71, 80, 175, 0.6) 0%,
+    rgba(75, 83, 179, 0.6) 49.5%,
+    rgba(29, 33, 72, 0.6) 100%
+  );
+  border-radius: 10px;
+  position: relative;
+  backdrop-filter: blur(64px);
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 10px;
+    padding: 1px;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.2) 0%,
+      rgba(153, 153, 153, 0.2) 100%
+    );
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    -webkit-mask-composite: xor;
+    pointer-events: none;
+    z-index: 0;
+  }
+}
+
+.inputsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.inputGroup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 15px;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(130, 130, 130, 0.5);
+  border-radius: 10px;
+}
+
+.inputIcon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.inputLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tokenIcon {
+  width: 20px;
+  height: 20px;
+}
+
+.tokenLabel {
+  font-family: "Manrope", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.input {
+  flex: 1;
+  height: 24px;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-family: "Manrope", sans-serif;
+  font-size: 16px;
+
+font-weight: 700;
+
+line-height: 130%;
+color: #fff;
+}
+
+.rateIcon {
+  width: 16px;
+  height: 16px;
+}
+
+.currencyIcon {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.currencyAmount {
+  font-family: "Manrope", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  flex-grow: 1;
+}
+
+.withdrawButton {
+  width: 100%;
+  height: 48px;
+  background: url('/exchange/buttonbg.svg');
+  background-size: cover;
+  background-position: center;
+  border-radius: 15px;
+  border: none;
+  color: white;
+  font-family: "Manrope", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  backdrop-filter: blur(64px);
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 15px;
+    padding: 1px;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.2) 0%,
+      rgba(153, 153, 153, 0.2) 100%
+    );
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    -webkit-mask-composite: xor;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  &:active {
+    opacity: 0.8;
+  }
+}
+
+.withdrawButton::after {
+  content: '';
+  position: absolute;
+  top: -125px;
+  left: -194px;
+  width: 253px;
+  height: 669px;
+  background: radial-gradient(
+    ellipse 199px 120px at 50% 50%,
+    rgba(49, 56, 137, 1) 0%,
+    rgba(99, 105, 187, 1) 20%,
+    rgba(255, 255, 255, 0.8) 50%,
+    transparent 100%
+  );
+  filter: blur(37px);
+  animation: glow 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes glow {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+}
+
+.rateContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.rateLabel {
+  font-family: "Manrope", sans-serif;
+font-weight: 600;
+font-size: 16px;
+line-height: 130%;
+text-align: center;
+color: #828282;
+  margin: 0;
+}
+
+.rateValue {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-family: "Manrope", sans-serif;
+font-weight: 700;
+font-size: 12px;
+line-height: 130%;
+color: #fff;
+
+  svg {
+    width: 12px;
+    height: 12px;
+  }
+}
