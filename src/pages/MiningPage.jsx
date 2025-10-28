@@ -341,8 +341,50 @@ const MiningPage = ({ showPopup, setShowPopup }) => {
         messageIndex++;
         setTimeout(addPrepMessage, 500);
       } else {
-        // Сразу переходим к финальным сообщениям
-        addFinalMessages();
+        // Добавляем синхронизацию сети: прогресс-бар сверху, текст снизу с процентом
+        setTerminalLogs((prev) => [
+          getProgressBar(0),
+          "[NET] Синхронизация узлов 0%",
+          ...prev,
+        ]);
+
+        const progressSteps = [0, 13, 28, 35, 50, 69, 72, 96, 100];
+        let progressIndex = 0;
+
+        const updateProgress = () => {
+          if (progressIndex < progressSteps.length) {
+            const currentPercent = progressSteps[progressIndex];
+            setTerminalLogs((prev) => {
+              const newLogs = [...prev];
+              // Обновляем строку прогресс-бара
+              const progressLineIndex = newLogs.findIndex((log) =>
+                /^[█░\s]+/.test(log)
+              );
+              if (progressLineIndex !== -1) {
+                newLogs[progressLineIndex] = getProgressBar(currentPercent);
+              }
+              // Обновляем текст синхронизации с процентом
+              const textLineIndex = newLogs.findIndex((log) =>
+                log.startsWith("[NET] Синхронизация узлов")
+              );
+              if (textLineIndex !== -1) {
+                newLogs[
+                  textLineIndex
+                ] = `[NET] Синхронизация узлов ${currentPercent}%`;
+              }
+              return newLogs;
+            });
+            progressIndex++;
+            if (progressIndex < progressSteps.length) {
+              setTimeout(updateProgress, 400);
+            } else {
+              // После завершения прогресса выводим финальные сообщения
+              addFinalMessages();
+            }
+          }
+        };
+
+        setTimeout(updateProgress, 300);
       }
     };
 
