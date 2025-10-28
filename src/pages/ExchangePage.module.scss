@@ -8,24 +8,23 @@
   padding: 20px;
   padding-bottom: 100px;
   position: relative;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 50lvh;
-    background-image: url('/exchange/bg.png');
-    background-size: cover;
-    background-position: top center;
-    background-repeat: no-repeat;
-    z-index: 0;
-    pointer-events: none;
-  }
 }
 
-.exchangePage > * {
+.bgImage {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50lvh;
+  background-image: url('/exchange/bg.png');
+  background-size: cover;
+  background-position: top center;
+  background-repeat: no-repeat;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.exchangePage > *:not(.bgImage) {
   position: relative;
   z-index: 1;
 }

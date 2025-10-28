@@ -72,6 +72,7 @@ const ExchangePage = ({ onInputFocus }) => {
   }, [handleFocus, handleBlur]);
   return (
     <div className={styles.exchangePage}>
+      <div className={styles.bgImage}></div>
       <div className={styles.prototypeText}>prototype</div>
       <div className={styles.exchangeCard}>
         {/* Заголовок */}
