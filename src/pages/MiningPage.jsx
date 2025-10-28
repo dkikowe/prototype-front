@@ -314,6 +314,26 @@ const MiningPage = ({ showPopup, setShowPopup }) => {
     return `${progressBar} ${percent}%`;
   };
 
+  // Рендер строки лайв-ленты с подсветкой суммы и знака биткоина
+  const renderLiveMessage = (msg, index) => {
+    const match = msg.match(/^(.*?)(\d+)₿(.*)$/);
+    if (!match) {
+      return (
+        <div key={index} className={styles.logLine}>
+          {msg}
+        </div>
+      );
+    }
+    const [, before, amount, after] = match;
+    return (
+      <div key={index} className={styles.logLine}>
+        {before}
+        <span className={styles.amountHighlight}>{amount}₿</span>
+        {after}
+      </div>
+    );
+  };
+
   const startScan = () => {
     if (isScanning) return;
     setIsScanning(true);
@@ -537,11 +557,9 @@ const MiningPage = ({ showPopup, setShowPopup }) => {
                       {log}
                     </div>
                   ))
-                : liveFeedMessages.map((msg, index) => (
-                    <div key={index} className={styles.logLine}>
-                      {msg}
-                    </div>
-                  ))}
+                : liveFeedMessages.map((msg, index) =>
+                    renderLiveMessage(msg, index)
+                  )}
             </div>
 
             <div className={styles.terminalInput}>
