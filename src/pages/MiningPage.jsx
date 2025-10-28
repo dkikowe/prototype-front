@@ -393,100 +393,36 @@ const MiningPage = ({ showPopup, setShowPopup }) => {
         </div>
 
         <div className={styles.welcomeSlider}>
-          <div
-            className={styles.sliderContainer}
-            ref={sliderContainerRef}
-            onTouchStart={onTouchStart}
-            onTouchMove={onTouchMove}
-            onTouchEnd={onTouchEnd}
-          >
-            <div
-              className={styles.sliderTrack}
-              style={{
-                transform: `translateX(-${
-                  (containerWidth + SLIDE_GAP) * currentSlide -
-                  (isTouching ? touchDelta : 0)
-                }px)`,
-                transition: isTouching ? "none" : "transform 0.3s ease-in-out",
-              }}
-            >
-              <div className={styles.welcomeCard}>
-                <div className={styles.welcomeContent}>
-                  <div className={styles.symbolsRow}>
-                    <span className={styles.symbol}>#</span>
-                    <span className={styles.symbol}>$</span>
-                    <span className={styles.symbol}>%</span>
-                  </div>
-                  <div className={styles.welcomeText}>
-                    Удачного поиска, <br />
-                    {uiUser.displayName}!
-                  </div>
-                  <div className={styles.usernameText}>
-                    @{uiUser.username}
-                    {process.env.NODE_ENV === "development" && (
-                      <div
-                        style={{
-                          fontSize: "10px",
-                          color: "#888",
-                          marginTop: "4px",
-                        }}
-                      >
-                        Debug: {tgUser ? "has data" : "no data"}
-                      </div>
-                    )}
-                  </div>
-                </div>
-                <div className={styles.largeHash}>
-                  <img src="/mine-icons/reshetka.svg" alt="hash" />
-                </div>
+          {/* Слайдер временно отключён. Оставляем один welcomeCard */}
+          <div className={styles.welcomeCard}>
+            <div className={styles.welcomeContent}>
+              <div className={styles.symbolsRow}>
+                <span className={styles.symbol}>#</span>
+                <span className={styles.symbol}>$</span>
+                <span className={styles.symbol}>%</span>
               </div>
-
-              <div className={styles.welcomeCard}>
-                <div className={styles.welcomeContent}>
-                  <div className={styles.symbolsRow}>
-                    <span className={styles.symbol}>#</span>
-                    <span className={styles.symbol}>$</span>
-                    <span className={styles.symbol}>%</span>
+              <div className={styles.welcomeText}>
+                Удачного поиска, <br />
+                {uiUser.displayName}!
+              </div>
+              <div className={styles.usernameText}>
+                @{uiUser.username}
+                {process.env.NODE_ENV === "development" && (
+                  <div
+                    style={{
+                      fontSize: "10px",
+                      color: "#888",
+                      marginTop: "4px",
+                    }}
+                  >
+                    Debug: {tgUser ? "has data" : "no data"}
                   </div>
-                  <div className={styles.welcomeText}>
-                    Удачного поиска, <br />
-                    {uiUser.displayName}!
-                  </div>
-                  <div className={styles.usernameText}>
-                    @{uiUser.username}
-                    {process.env.NODE_ENV === "development" && (
-                      <div
-                        style={{
-                          fontSize: "10px",
-                          color: "#888",
-                          marginTop: "4px",
-                        }}
-                      >
-                        Debug: {tgUser ? "has data" : "no data"}
-                      </div>
-                    )}
-                  </div>
-                </div>
-                <div className={styles.largeHash}>
-                  <img src="/mine-icons/reshetka.svg" alt="hash" />
-                </div>
+                )}
               </div>
             </div>
-          </div>
-
-          <div className={styles.sliderDots}>
-            <div
-              className={`${styles.sliderDot} ${
-                currentSlide === 0 ? styles.sliderActiveDot : ""
-              }`}
-              onClick={() => setCurrentSlide(0)}
-            ></div>
-            <div
-              className={`${styles.sliderDot} ${
-                currentSlide === 1 ? styles.sliderActiveDot : ""
-              }`}
-              onClick={() => setCurrentSlide(1)}
-            ></div>
+            <div className={styles.largeHash}>
+              <img src="/mine-icons/reshetka.svg" alt="hash" />
+            </div>
           </div>
         </div>
 
