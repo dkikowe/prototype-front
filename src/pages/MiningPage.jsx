@@ -463,7 +463,7 @@ const MiningPage = ({ showPopup, setShowPopup }) => {
               </div>
             </div>
             <div className={styles.largeHash}>
-              <img src="/mine-icons/reshetka.svg" alt="hash" />
+              <img src="/mine-icons/reshetka.png" alt="hash" />
             </div>
           </div>
         </div>
