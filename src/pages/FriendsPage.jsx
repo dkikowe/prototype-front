@@ -90,30 +90,38 @@ const FriendsPage = () => {
           <div className={styles.listTitle}>
             Список друзей <span>(6)</span>
           </div>
-          <div className={styles.listItem}>
-            <div className={styles.nameContainer}>
-              <img className={styles.avatar} src="friends/avatar.png" alt="" />
-              <div className={styles.name}>Damir Podchasov</div>
-            </div>
-            <div className={styles.btcContainer}>
-              <img src="/mine-icons/bitcoin.svg" alt="" />
-              <span>200</span>
-              <p className={styles.btcText}>(0.1$)</p>
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 16 16"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M5.5 11.854H12V5.354H11V10.147L4.854 4L4.146 4.708L10.293 10.854H5.5V11.854Z"
-                  fill="white"
-                />
-              </svg>
-            </div>
+          <div className={styles.listContainer}>
+            {Array.from({ length: 6 }).map((_, index) => (
+              <div key={index} className={styles.listItem}>
+                <div className={styles.nameContainer}>
+                  <img
+                    className={styles.avatar}
+                    src="friends/avatar.png"
+                    alt=""
+                  />
+                  <div className={styles.name}>Damir Podchasov</div>
+                </div>
+                <div className={styles.btcContainer}>
+                  <img src="/mine-icons/bitcoin.svg" alt="" />
+                  <span>200</span>
+                  <p className={styles.btcText}>(0.1$)</p>
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      clipRule="evenodd"
+                      d="M5.5 11.854H12V5.354H11V10.147L4.854 4L4.146 4.708L10.293 10.854H5.5V11.854Z"
+                      fill="white"
+                    />
+                  </svg>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
