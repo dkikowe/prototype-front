@@ -15,8 +15,8 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 50lvh;
-  background-image: url('/exchange/bg.png');
+  height: 100lvh;
+  background-image: url('/exchange/bg1.png');
   background-size: cover;
   background-position: top center;
   background-repeat: no-repeat;
@@ -24,16 +24,7 @@
   pointer-events: none;
 }
 
-.bgBottom {
-  position: fixed;
-  top: 50lvh;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: #000;
-  z-index: 0;
-  pointer-events: none;
-}
+.bgBottom { display: none; }
 
 .exchangePage > *:not(.bgImage):not(.bgBottom) {
   position: relative;
@@ -284,7 +275,6 @@
 }
 
 @supports not (height: 100lvh) {
-  .bgImage { height: calc(var(--vh, 1vh) * 50); }
-  .bgBottom { top: calc(var(--vh, 1vh) * 50); }
+  .bgImage { height: calc(var(--vh, 1vh) * 100); }
   .exchangePage { min-height: calc(var(--vh, 1vh) * 100); }
 }
