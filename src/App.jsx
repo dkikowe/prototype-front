@@ -5,6 +5,7 @@ import TasksPage from "./pages/TasksPage";
 import MiningPage from "./pages/MiningPage";
 import ExchangePage from "./pages/ExchangePage";
 import ProfilePage from "./pages/ProfilePage";
+import FriendsPage from "./pages/FriendsPage";
 
 function App() {
   const [activeTab, setActiveTab] = useState("mining");
@@ -83,7 +84,7 @@ function App() {
       case "exchange":
         return <ExchangePage onInputFocus={setIsInputFocused} />;
       case "profile":
-        return <ProfilePage />;
+        return <FriendsPage />;
       default:
         return <MiningPage showPopup={showPopup} setShowPopup={setShowPopup} />;
     }
