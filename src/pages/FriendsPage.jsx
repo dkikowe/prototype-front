@@ -1,13 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./FriendsPage.module.scss";
+import ToastNotification from "../components/ToastNotification";
 
 const FriendsPage = () => {
+  const [showToast, setShowToast] = useState(false);
+  const [isButtonDark, setIsButtonDark] = useState(false);
+
+  const handleCopyClick = () => {
+    // Копирование ссылки (можете добавить реальную логику копирования)
+    const linkToCopy = window.location.href;
+    navigator.clipboard.writeText(linkToCopy);
+
+    // Затемнение кнопки на секунду
+    setIsButtonDark(true);
+    setTimeout(() => {
+      setIsButtonDark(false);
+    }, 1000);
+
+    // Показ уведомления
+    setShowToast(true);
+  };
+
   return (
     <div className={styles.page}>
       <div className={styles.pageContent}>
         <div className={styles.inviteContainer}>
           <div className={styles.inviteButton}>Пригласить друга</div>
-          <div className={styles.copyButton}>
+          <div
+            className={`${styles.copyButton} ${
+              isButtonDark ? styles.copyButtonDark : ""
+            }`}
+            onClick={handleCopyClick}
+          >
             <svg
               width="24"
               height="24"
@@ -29,6 +53,12 @@ const FriendsPage = () => {
         <div className={styles.prototypeText}>prototype</div>
 
         <div className={styles.friendsCard}>
+          {showToast && (
+            <ToastNotification
+              onClose={() => setShowToast(false)}
+              duration={4000}
+            />
+          )}
           <div className={styles.friendsCard__content}>
             <svg
               width="28"
