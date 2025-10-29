@@ -29,8 +29,9 @@ body {
   min-width: 320px;
   min-height: var(--tg-viewport-height, 100vh);
   background-color: #101010;
-  overflow-x: hidden;
+  overflow: hidden;
   width: 100%;
+
 }
 
 #root {

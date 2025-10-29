@@ -105,7 +105,7 @@ const ExchangePage = ({ onInputFocus }) => {
           <div className={styles.inputGroup}>
             <img
               className={styles.inputIcon}
-              src="/exchange/usdt.svg"
+              src="/exchange/usdt.png"
               alt="USDT"
             />
             <input
@@ -141,7 +141,7 @@ const ExchangePage = ({ onInputFocus }) => {
             <span>=</span>
             <img
               className={styles.rateIcon}
-              src="/exchange/usdt.svg"
+              src="/exchange/usdt.png"
               alt="USDT"
             />
             <span>0.012 $</span>

@@ -1,5 +1,5 @@
 .exchangePage {
-  min-height: 100svh;
+  height: calc(100vh - 80px);
   background-color: transparent;
   color: white;
   display: flex;
@@ -124,7 +124,7 @@
 .title {
   font-family: "Manrope", sans-serif;
   font-weight: 700;
-  font-size: 26px;
+  font-size: 22px;
   line-height: 130%;
   text-align: center;
   color: #fff;

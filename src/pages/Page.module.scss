@@ -5,6 +5,7 @@
   background-position: left 100%;
   background-repeat: no-repeat;
   background-size: 250px 250px;
+  overflow: hidden;
   color: white;
   padding-bottom: 80px; /* Отступ для навигационной панели */
 }
@@ -38,7 +39,7 @@
   color: #fff;
   margin-top: 50px;
   @media screen and (min-width: 400px) {
-    margin-top: 50px;
+    margin-top: 60px;
   }
 }
 

@@ -11,9 +11,9 @@
     line-height: 130%;
     text-align: center;
     color: #fff;
-    margin-top: 40px;
+    margin-top: 50px;
     @media screen and (min-width: 400px) {
-      margin-top: 50px;
+      margin-top: 60px;
     }
   }
 
@@ -21,7 +21,7 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  gap: 16px;
+  gap: 15px;
   width: 90%;
   margin: 0 auto;
   height: calc(100vh - 80px);
@@ -141,6 +141,7 @@ color: #828282;}
     gap: 10px;
     flex: 1;
     min-height: 0;
+    margin-top: 5px;
 }
 
 .listContainer {
@@ -169,7 +170,7 @@ color: #828282;}
     span {
         font-family: "Manrope", sans-serif;
 font-weight: 700;
-font-size: 18px;
+font-size: 16px;
 line-height: 130%;
 color: #fff;
 opacity: 0.2;
@@ -200,7 +201,7 @@ border: 1px solid #5454547a;
 .name{
     font-family: "Manrope", sans-serif;
 font-weight: 700;
-font-size: 16px;
+font-size: 14px;
 line-height: 130%;
 color: #fff;
 }
@@ -219,7 +220,7 @@ color: #fff;
     span {
         font-family: "Manrope", sans-serif;
 font-weight: 700;
-font-size: 16px;
+font-size: 14px;
 line-height: 130%;
 color: #fff;}
 svg {
@@ -232,7 +233,7 @@ svg {
 .btcText {
     font-family: "Manrope", sans-serif;
 font-weight: 700;
-font-size: 16px;
+font-size: 14px;
 line-height: 130%;
 color: rgba(255, 255, 255, 0.5);}
 
