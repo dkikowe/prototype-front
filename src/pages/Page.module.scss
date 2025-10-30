@@ -14,7 +14,7 @@
 
   max-width: 90%;
   margin: 0 auto;
-  height: 85vh;
+  height: calc(100vh - 90px);
   overflow: hidden;
 
   h1 {
@@ -38,7 +38,7 @@
   line-height: 130%;
   text-align: center;
   color: #fff;
-  margin-top: 40px;
+  margin-top: 50px;
   @media screen and (min-width: 425px) {
     margin-top: 60px;
   }
