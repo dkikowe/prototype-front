@@ -39,7 +39,7 @@
   text-align: center;
   color: #fff;
   margin-top: 50px;
-  @media screen and (min-width: 400px) {
+  @media screen and (min-width: 425px) {
     margin-top: 60px;
   }
 }
@@ -268,7 +268,7 @@ outline: none;
 
 .terminalContainer {
   width: 100%;
-  height: 309px;
+  height: 50vh;
   margin-top: 15px;
   position: relative;
   border-radius: 16px;
@@ -506,7 +506,7 @@ outline: none;
 }
 
 .terminalContent {
-  height: 259px;
+  height: 60%;
   background-color: rgba(32, 32, 32, 0.5);
   backdrop-filter: blur(100px);
 
