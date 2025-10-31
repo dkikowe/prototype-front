@@ -203,14 +203,13 @@ const MiningPage = ({ showPopup, setShowPopup }) => {
         i++;
         setTimeout(addMessage, 500);
       } else if (i === 3) {
-        // Добавляем строку синхронизации (прогресс-бар сверху, текст снизу)
+        // Добавляем строку синхронизации (одна строка: текст + прогресс)
         setTerminalLogs((prev) => [
-          getProgressBar(0),
-          "[SYNC] Синхронизация узлов 0%",
+          `[SYNC] Синхронизация узлов ${getProgressBar(0)}`,
           ...prev,
         ]);
 
-        // Анимируем синхронизацию
+        // Анимируем синхронизацию (обновляем одну строку)
         const progressSteps = [0, 10, 25, 37, 49, 56, 85, 93, 97, 100];
         let progressIndex = 0;
 
@@ -219,21 +218,16 @@ const MiningPage = ({ showPopup, setShowPopup }) => {
             const currentPercent = progressSteps[progressIndex];
             setTerminalLogs((prev) => {
               const newLogs = [...prev];
-              // Обновляем прогресс-бар
-              const progressLineIndex = newLogs.findIndex((log) =>
-                /^[█░\s]+/.test(log)
-              );
-              if (progressLineIndex !== -1) {
-                newLogs[progressLineIndex] = getProgressBar(currentPercent);
-              }
-              // Обновляем текст синхронизации с процентом
-              const textLineIndex = newLogs.findIndex((log) =>
+              // Обновляем строку синхронизации (одна строка)
+              const syncLineIndex = newLogs.findIndex((log) =>
                 log.startsWith("[SYNC] Синхронизация узлов")
               );
-              if (textLineIndex !== -1) {
+              if (syncLineIndex !== -1) {
                 newLogs[
-                  textLineIndex
-                ] = `[SYNC] Синхронизация узлов ${currentPercent}%`;
+                  syncLineIndex
+                ] = `[SYNC] Синхронизация узлов ${getProgressBar(
+                  currentPercent
+                )}`;
               }
               return newLogs;
             });
@@ -308,7 +302,7 @@ const MiningPage = ({ showPopup, setShowPopup }) => {
 
   const getProgressBar = (percent) => {
     if (percent === undefined || percent === null) return "";
-    const blocks = 10;
+    const blocks = 8; // более компактная шкала
     const filled = Math.floor((percent / 100) * blocks);
     const progressBar = "█".repeat(filled) + "░".repeat(blocks - filled);
     return `${progressBar} ${percent}%`;
@@ -361,10 +355,9 @@ const MiningPage = ({ showPopup, setShowPopup }) => {
         messageIndex++;
         setTimeout(addPrepMessage, 500);
       } else {
-        // Добавляем синхронизацию сети: прогресс-бар сверху, текст снизу с процентом
+        // Добавляем синхронизацию сети: одна строка (текст + прогресс)
         setTerminalLogs((prev) => [
-          getProgressBar(0),
-          "[NET] Синхронизация узлов 0%",
+          `[NET] Синхронизация узлов ${getProgressBar(0)}`,
           ...prev,
         ]);
 
@@ -376,21 +369,16 @@ const MiningPage = ({ showPopup, setShowPopup }) => {
             const currentPercent = progressSteps[progressIndex];
             setTerminalLogs((prev) => {
               const newLogs = [...prev];
-              // Обновляем строку прогресс-бара
-              const progressLineIndex = newLogs.findIndex((log) =>
-                /^[█░\s]+/.test(log)
-              );
-              if (progressLineIndex !== -1) {
-                newLogs[progressLineIndex] = getProgressBar(currentPercent);
-              }
-              // Обновляем текст синхронизации с процентом
-              const textLineIndex = newLogs.findIndex((log) =>
+              // Обновляем одну строку с прогрессом
+              const netLineIndex = newLogs.findIndex((log) =>
                 log.startsWith("[NET] Синхронизация узлов")
               );
-              if (textLineIndex !== -1) {
+              if (netLineIndex !== -1) {
                 newLogs[
-                  textLineIndex
-                ] = `[NET] Синхронизация узлов ${currentPercent}%`;
+                  netLineIndex
+                ] = `[NET] Синхронизация узлов ${getProgressBar(
+                  currentPercent
+                )}`;
               }
               return newLogs;
             });
