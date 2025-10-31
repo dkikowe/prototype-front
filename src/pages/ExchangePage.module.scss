@@ -1,11 +1,11 @@
 .exchangePage {
-  min-height: 100lvh;
+  height: calc(100vh - 90px);
   background-color: transparent;
   color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
+  padding: 0 20px;
   padding-bottom: 100px;
   position: relative;
 }
@@ -38,7 +38,10 @@
   line-height: 130%;
   text-align: center;
   color: #fff;
-  margin-top: 30px;
+  margin-top: 50px;
+  @media screen and (min-width: 425px) {
+    margin-top: 60px;
+  }
 }
 
 .exchangeCard {
