@@ -56,20 +56,26 @@ const BottomNavigation = ({
       } ${isInputFocused ? styles.hidden : ""}`}
     >
       <div className={styles.navContent}>
-        {tabs.map((tab) => (
-          <div
-            key={tab.id}
-            className={`${styles.navItem} ${
-              activeTab === tab.id ? styles.active : ""
-            }`}
-            onClick={() => handleTabClick(tab.id)}
-          >
-            <div className={styles.navIcon}>
-              <img src={tab.icon} alt={tab.label} />
+        {tabs.map((tab) => {
+          const isMore = tab.id === "more";
+          const isActive = isMoreOpen
+            ? isMore
+            : activeTab === tab.id ||
+              (isMore && (activeTab === "profile" || activeTab === "friends"));
+
+          return (
+            <div
+              key={tab.id}
+              className={`${styles.navItem} ${isActive ? styles.active : ""}`}
+              onClick={() => handleTabClick(tab.id)}
+            >
+              <div className={styles.navIcon}>
+                <img src={tab.icon} alt={tab.label} />
+              </div>
+              <span className={styles.navLabel}>{tab.label}</span>
             </div>
-            <span className={styles.navLabel}>{tab.label}</span>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {isMoreOpen && (
