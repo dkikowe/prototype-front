@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import styles from "./BottomNavigation.module.scss";
 
 const BottomNavigation = ({
@@ -7,33 +7,47 @@ const BottomNavigation = ({
   showPopup,
   isInputFocused,
 }) => {
-  const tabs = [
-    {
-      id: "leaders",
-      label: "Лидеры",
-      icon: "/nav-icons/лидеры.png",
-    },
-    {
-      id: "tasks",
-      label: "Задания",
-      icon: "/nav-icons/задания.png",
-    },
-    {
-      id: "mining",
-      label: "Майнинг",
-      icon: "/nav-icons/mining.png",
-    },
-    {
-      id: "exchange",
-      label: "Обмен",
-      icon: "/nav-icons/обмен.png",
-    },
-    {
-      id: "profile",
-      label: "Еще",
-      icon: "/nav-icons/еще.svg",
-    },
-  ];
+  const [isMoreOpen, setIsMoreOpen] = useState(false);
+
+  const tabs = useMemo(
+    () => [
+      {
+        id: "leaders",
+        label: "Лидеры",
+        icon: "/nav-icons/лидеры.png",
+      },
+      {
+        id: "tasks",
+        label: "Задания",
+        icon: "/nav-icons/задания.png",
+      },
+      {
+        id: "mining",
+        label: "Майнинг",
+        icon: "/nav-icons/mining.png",
+      },
+      {
+        id: "exchange",
+        label: "Обмен",
+        icon: "/nav-icons/обмен.png",
+      },
+      {
+        id: "more",
+        label: "Еще",
+        icon: "/nav-icons/еще.svg",
+      },
+    ],
+    []
+  );
+
+  const handleTabClick = (tabId) => {
+    if (tabId === "more") {
+      setIsMoreOpen((prev) => !prev);
+      return;
+    }
+    setIsMoreOpen(false);
+    onTabChange(tabId);
+  };
 
   return (
     <div
@@ -48,7 +62,7 @@ const BottomNavigation = ({
             className={`${styles.navItem} ${
               activeTab === tab.id ? styles.active : ""
             }`}
-            onClick={() => onTabChange(tab.id)}
+            onClick={() => handleTabClick(tab.id)}
           >
             <div className={styles.navIcon}>
               <img src={tab.icon} alt={tab.label} />
@@ -57,6 +71,39 @@ const BottomNavigation = ({
           </div>
         ))}
       </div>
+
+      {isMoreOpen && (
+        <div className={styles.moreMenu}>
+          <button
+            className={styles.moreItem}
+            onClick={() => {
+              setIsMoreOpen(false);
+              onTabChange("profile");
+            }}
+          >
+            <img
+              className={styles.moreIcon}
+              src="/nav-icons/profile.png"
+              alt="Профиль"
+            />
+            <span className={styles.moreLabel}>Профиль</span>
+          </button>
+          <button
+            className={styles.moreItem}
+            onClick={() => {
+              setIsMoreOpen(false);
+              onTabChange("friends");
+            }}
+          >
+            <img
+              className={styles.moreIcon}
+              src="/nav-icons/friends.png"
+              alt="Друзья"
+            />
+            <span className={styles.moreLabel}>Друзья</span>
+          </button>
+        </div>
+      )}
     </div>
   );
 };

@@ -84,6 +84,8 @@ function App() {
       case "exchange":
         return <ExchangePage onInputFocus={setIsInputFocused} />;
       case "profile":
+        return <ProfilePage />;
+      case "friends":
         return <FriendsPage />;
       default:
         return <MiningPage showPopup={showPopup} setShowPopup={setShowPopup} />;
